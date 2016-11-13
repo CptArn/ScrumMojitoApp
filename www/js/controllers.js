@@ -50,7 +50,7 @@ angular.module('starter.controllers', [])
     { title: 'Rap', id: 5 },
     { title: 'Cowbell', id: 6 }
   ];
-  var helloWorldURL = 'https://student-dating-test.herokuapp.com/hello?name=Arne';
+  var helloWorldURL = 'https://student-dating-test.herokuapp.com/greeting?name=Arne';
   $http({
     type: "GET",
     dataType: "json",

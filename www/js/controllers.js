@@ -41,31 +41,19 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('HomeCtrl', function($scope, $http) {
-  var helloWorldURL = 'https://student-dating-test.herokuapp.com/greeting?name=Arne';
-  $http({
-    type: "GET",
-    dataType: "json",
-    url: helloWorldURL
-  }).success(function(data) {
-    $scope.helloWorld = data;
-    console.log(data);
-  }).error(function(error) {
-    $scope.helloWorld = "Sorry, something went wrong with our server";
-    console.log(error);
-  })
+.controller('DashboardCtrl', function($scope, $http) {
+    $http.get('https://student-dating-test.herokuapp.com/greeting?name=Arne').success(function(data) {
+      $scope.helloWorld = data;
+      console.log(data.content);
+    }).error(function(error) {
+      $scope.helloWorld = "Sorry, something went wrong with our server";
+      console.log(error);
+  });
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
+.controller('ProfileCtrl', function($scope) {
+
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('MatchesCtrl', function($scope, $stateParams) {
 });

@@ -52,7 +52,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ProfileCtrl', function($scope) {
-
+  $scope.checked = true;
 })
 
 .controller('MatchesCtrl', function($scope, $stateParams) {

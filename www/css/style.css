@@ -8,6 +8,14 @@
 #264653
 #E9C46A
 
+.bar {
+    background-color: #01C0B1 !important;
+    color: white !important;
+}
+
+.bar-header {
+    color: white;
+}
 
 .item-avatar  img{
     /*width:100% !important;
@@ -36,7 +44,10 @@
 .item-checkbox-line {
     border-bottom: 3px solid lightgray;
 }
+.bar-header {
+    background-color: #01C0B1;
 
+}
 .background, .background .pane, .background .item, .background .item-complex .item-content{
     background-color: #01C0B1;
 }
@@ -91,4 +102,17 @@ input[type=range] {
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   /*border: 1px solid #264653;*/
+}
+/* Custom checkbox */
+.checkbox-custom input:before,
+.checkbox-custom .checkbox-icon:before {
+  border-color: #06a296; }
+
+.checkbox-custom input:checked:before,
+.checkbox-custom input:checked + .checkbox-icon:before {
+  background: #06a296;
+  border-color: #06a296; }
+
+.bar-stable + .bar-header{
+    background-color: #06a296 ;
 }

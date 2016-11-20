@@ -11,9 +11,6 @@ describe('ProfileCtrl', function() {
 		ctrl = $controller('ProfileCtrl', {$scope: $scope});
 	}));
 
-	it('checked schould be set to true', function() {
-		expect($scope.checked).toEqual(true);
-	});
 	it('user should have all information', function() {
 		expect($scope.user).toEqual({name: "Arne Vlaeminck",email: "arne.vlaeminck@student.odisee.be",school: "Odisee, Gent",about: "fun guy, javascript is life"});
 		expect($scope.gender).toEqual({ male: true, female: false, trans: false });

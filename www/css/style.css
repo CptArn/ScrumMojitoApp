@@ -15,6 +15,7 @@
 .bar-stable {
     background-color: #01C0B1 !important;
     color: white !important;
+    border: none;
 }
 
 .bar-stable button{

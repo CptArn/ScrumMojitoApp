@@ -2,7 +2,7 @@
   <ion-content>
     <div class="profile-header">
         <img class="profile-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
-        <h3 style="text-align: center;">Arne Vlaeminck</h3>
+        <h3 style="text-align: center;">{{user.name}}</h3>
     </div>
 
     <ion-list>
@@ -33,7 +33,7 @@
         <ion-item>
             <span class="preferences-title">Age between:</span>
             <div class="range">
-              <span class="preferences-title">18j </span>
+              <span class="preferences-title">16j </span>
               <input type="range" ng-model="ageSlider.value" min="{{ageSlider.min}}" max="{{ageSlider.max}}" name="age">
               <span class="preferences-title">{{ageSlider.value}}j</span>
             </div>

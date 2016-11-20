@@ -13,5 +13,5 @@ describe('ProfileCtrl', function() {
 
 	it('checked schould be set to true', function() {
 		expect($scope.checked).toEqual(true);
-	})
+	});
 });

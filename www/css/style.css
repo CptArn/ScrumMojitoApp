@@ -1,4 +1,14 @@
 /* Empty. Add your own CSS if you like */
+/* COLOR SCHEME */
+#70C1B3
+#B2DBBF
+#F3FFBD
+#FF1654
+#01C0B1
+#264653
+#E9C46A
+
+
 .item-avatar  img{
     /*width:100% !important;
     height : 100% !important;
@@ -7,11 +17,78 @@
 }
 
 .profile-image {
-       display: block;
-       border-radius: 100px;
-       border: 1px solid #fff;
-       width: 128px;
-       height: 128px;
-       margin: 30px auto 0;
-       /*box-shadow: 0px 0px 4px rgba(0,0,0,0.7);*/
-     }
+    display: block;
+    border-radius: 100px;
+    border: 1px solid #fff;
+    width: 128px;
+    height: 128px;
+    margin: 30px auto 0;
+    /*box-shadow: 0px 0px 4px rgba(0,0,0,0.7);*/
+}
+
+.item-checkbox {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
+.item-checkbox-line {
+    border-bottom: 3px solid lightgray;
+}
+
+.background, .background .pane, .background .item, .background .item-complex .item-content{
+    background-color: #01C0B1;
+}
+
+/* Menu bar colors */
+.bar-purple {
+    background-color: #01C0B1;
+}
+.bar-purple .title{
+    color: white;
+}
+.bar-purple .left-buttons button{
+    color: white;
+}
+
+/*ion-content {
+    background-color: #01C0B1;
+}*/
+ion-content h3{
+    color: white;
+}
+.item-divider {
+    border-top: 0px;
+    background-color: #06a296;
+    color: white;
+}
+.profile-header {
+    background-color: #01C0B1;
+    height: 20%;
+    padding-top: 1rem;
+}
+
+.button-custom {
+    background-color: #06a296;
+    color: white;
+}
+
+.input-label {
+    color: #264653;
+    font-weight: bold;
+}
+
+.preferences-title {
+    color: #264653;
+    font-weight: bold;
+}
+
+input[type=range] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  /*border: 1px solid #264653;*/
+}

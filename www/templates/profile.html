@@ -1,42 +1,58 @@
 <ion-view view-title="My Profile">
   <ion-content>
-    <img class="profile-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
-    <h3 style="text-align: center;">Arne Vlaeminck</h3>
+    <div class="profile-header">
+        <img class="profile-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
+        <h3 style="text-align: center;">Arne Vlaeminck</h3>
+    </div>
+
     <ion-list>
         <div class="item item-divider">My info</div>
-        <ion-item>Name: Arne Vlaeminck</ion-item>
-        <ion-item>E-mail: arne.vlaeminck@student.odisee.be</ion-item>
-        <ion-item>School: Odisee, Gent</ion-item>
-        <ion-item>About me: fun guy, javascript is life</ion-item>
+        <label class="item item-input">
+            <span class="input-label" ng-class="passwordlabel">Name: </span>
+            <input type="text" ng-model="user.name" value="{{user.name}}" required>
+        </label>
+        <label class="item item-input">
+            <span class="input-label" ng-class="passwordlabel">Email: </span>
+            <input type="text" ng-model="user.email" value="{{user.email}}" required>
+        </label>
+        <label class="item item-input">
+            <span class="input-label" ng-class="passwordlabel">School: </span>
+            <input type="text" ng-model="user.school" value="{{user.school}}" required>
+        </label>
+        <label class="item item-input">
+            <span class="input-label" ng-class="passwordlabel">About: </span>
+            <textarea ng-model="user.about" col="10" maxlength="100" value="{{user.about}}" style="width: 65%;"></textarea>
+        </label>
         <div class="item item-divider">My preferences</div>
-        <ion-item>Looking for:
-            <ion-checkbox ng-model="filter.red"><i class="icon ion-female" style="float: right; font-size: 30px;"></i></ion-checkbox>
-            <ion-checkbox ng-model="filter.yellow"><i class="icon ion-male" style="float: right; font-size: 30px;"></i></ion-checkbox>
-            <ion-checkbox ng-model="checked" ng-checked="checked"><i class="icon ion-transgender" style="float: right; font-size: 30px;"></i></ion-checkbox>
+        <ion-item>
+            <span class="preferences-title">Looking for:</span>
+            <ion-checkbox class="item-checkbox-line checkbox-custom" ng-model="gender.female" ng-checked="gender.female"><i class="icon ion-female" style="float: right; font-size: 30px;"></i></ion-checkbox>
+            <ion-checkbox class="item-checkbox-line checkbox-custom" ng-model="gender.male" ng-checked="gender.male"><i class="icon ion-male" style="float: right; font-size: 30px;"></i></ion-checkbox>
+            <ion-checkbox class="checkbox-custom" ng-model="gender.trans" ng-checked="gender.trans"><i class="icon ion-transgender" style="float: right; font-size: 30px;"></i></ion-checkbox>
         </ion-item>
         <ion-item>
+            <span class="preferences-title">Age between:</span>
             <div class="range">
-              18j
-              <input type="range" name="volume">
-              99j
+              <span class="preferences-title">18j </span>
+              <input type="range" ng-model="ageSlider.value" min="{{ageSlider.min}}" max="{{ageSlider.max}}" name="age">
+              <span class="preferences-title">{{ageSlider.value}}j</span>
             </div>
         </ion-item>
-        <ion-item>Location:
-               <select style="float: right;">
-                 <option selected>Gent</option>
-                 <option>Kortrijk</option>
-                 <option>Leuven</option>
+        <ion-item>
+                <span class="preferences-title">Location:</span>
+               <select ng-model="selectedLocation" ng-options="location.id as location.value for location in locations" ng-change="changed(selectedLocation)" style="float: right;">
+                   <option value="">Select a location</option>
                </select>
         </ion-item>
-        <ion-item>Max. distance: Odisee, Gent
+        <ion-item>
+            <span class="preferences-title">Max. distance:</span>
             <div class="range">
-              0km
-              <input type="range" name="volume">
-              100km
+              <span class="preferences-title">Okm</span>
+              <input type="range" ng-model="distanceSlider.value" min="{{distanceSlider.min}}" max="{{distanceSlider.max}}" name="volume">
+              <span class="preferences-title">{{distanceSlider.value}}km</span>
             </div>
         </ion-item>
-
-        <button class="button button-full button-balanced">Save my profile</button>
+        <button class="button button-full button-custom" ng-click="saveProfile()">Save my profile</button>
     </ion-list>
   </ion-content>
 </ion-view>

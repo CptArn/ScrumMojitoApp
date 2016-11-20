@@ -12,9 +12,17 @@
     background-color: #01C0B1 !important;
     color: white !important;
 }
+.bar-stable {
+    background-color: #01C0B1 !important;
+    color: white !important;
+}
 
-.bar-header {
-    color: white;
+.bar-stable button{
+    color: white !important;
+}
+
+.bar-stable .title{
+    color: white !important;
 }
 
 .item-avatar  img{

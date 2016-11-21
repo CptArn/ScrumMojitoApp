@@ -18,51 +18,56 @@ angular.module('starter.controllers', [])
 
 // Controller for user profile page
 .controller('ProfileCtrl', function($scope, $http) {
-
+    $scope.user = [];
+    $scope.gender = [];
+    $scope.ageSlider = [];
+    $scope.distanceSlider = [];
+    $scope.selectedLocation = [];
 
     // Dropdown location options
     $scope.locations = [{id: 1, value: "Gent"}, {id: 2, value: "Kortrijk"}, {id: 3, value: "Leuven"}, {id: 4, value: "Brussel"}];
 
     $scope.$on('$ionicView.beforeEnter', function() {
         // Get profile information
-        
         $http.get('http://studyfindr.herokuapp.com/user/10210995798960326/info').success(function(data) {
-          console.log(data);
-          // User info
-          $scope.user = {
-              name: data.firstname + " " + data.lastname, // Could be nickname?
-              email: data.email,
-              school: "Odisee, Gent",
-              about: "fun guy, javascript is life"
-          };
-
-          // Gender preferences
-          $scope.gender = { male: data.prefMale, female: data.prefFemale, trans: data.prefTrans };
-
-           // Age slider options
-          $scope.ageSlider = {
-              value: data.prefAge, // Age offset
-              min: 16,
-              max: 99
-          };
-
-          $scope.selectedLocation = data.prefLocation;
- 
-          // Distance slider options
-          $scope.distanceSlider = {
-              value: data.prefDistance,
-              min: 0,
-              max: 40
-          };
-
+        //   console.log(data);
+          $scope.setProfile(data);
         }).error(function(error) {
           $scope.helloWorld = "Sorry, something went wrong with our server";
           console.log(error);
         });
     });
 
+    $scope.setProfile = function(data) {
+         // User info
+        $scope.user = {
+            name: data.firstname + " " + data.lastname, // Could be nickname?
+            email: data.email,
+            school: "Odisee, Gent",
+            about: "fun guy, javascript is life"
+        };
 
-  
+        // Gender preferences
+        $scope.gender = { male: data.prefMale, female: data.prefFemale, trans: data.prefTrans };
+
+        // Age slider options
+       $scope.ageSlider = {
+           value: data.prefAge, // Age offset
+           min: 16,
+           max: 99
+       };
+
+        // Location preference
+        $scope.selectedLocation = data.prefLocation;
+
+        // Distance slider options
+        $scope.distanceSlider = {
+         value: data.prefDistance,
+         min: 0,
+         max: 40
+        };
+    };
+
     // Save all profile settings
     $scope.saveProfile = function() {
         // Post to API

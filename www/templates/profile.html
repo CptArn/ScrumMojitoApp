@@ -2,14 +2,18 @@
   <ion-content>
     <div class="profile-header">
         <img class="profile-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
-        <h3 style="text-align: center;">{{user.name}}</h3>
+        <h3 style="text-align: center;">{{user.firstname}} {{user.lastname}}</h3>
     </div>
 
     <ion-list>
         <div class="item item-divider">My info</div>
         <label class="item item-input">
-            <span class="input-label" ng-class="passwordlabel">Name: </span>
-            <input type="text" ng-model="user.name" value="{{user.name}}" required>
+            <span class="input-label" ng-class="passwordlabel">First name: </span>
+            <input type="text" ng-model="user.firstname" value="{{user.firstname}}" required>
+        </label>
+        <label class="item item-input">
+            <span class="input-label" ng-class="passwordlabel">Last name: </span>
+            <input type="text" ng-model="user.lastname" value="{{user.lastname}}" required>
         </label>
         <label class="item item-input">
             <span class="input-label" ng-class="passwordlabel">Email: </span>
@@ -26,16 +30,16 @@
         <div class="item item-divider">My preferences</div>
         <ion-item>
             <span class="preferences-title">Looking for:</span>
-            <ion-checkbox class="item-checkbox-line checkbox-custom" ng-model="gender.female" ng-checked="gender.female"><i class="icon ion-female" style="float: right; font-size: 30px;"></i></ion-checkbox>
-            <ion-checkbox class="item-checkbox-line checkbox-custom" ng-model="gender.male" ng-checked="gender.male"><i class="icon ion-male" style="float: right; font-size: 30px;"></i></ion-checkbox>
-            <ion-checkbox class="checkbox-custom" ng-model="gender.trans" ng-checked="gender.trans"><i class="icon ion-transgender" style="float: right; font-size: 30px;"></i></ion-checkbox>
+            <ion-checkbox class="item-checkbox-line checkbox-custom" ng-model="user.prefFemale" ng-checked="user.prefFemale"><i class="icon ion-female" style="float: right; font-size: 30px;"></i></ion-checkbox>
+            <ion-checkbox class="item-checkbox-line checkbox-custom" ng-model="user.prefMale" ng-checked="user.prefMale"><i class="icon ion-male" style="float: right; font-size: 30px;"></i></ion-checkbox>
+            <ion-checkbox class="checkbox-custom" ng-model="user.prefTrans" ng-checked="user.prefTrans"><i class="icon ion-transgender" style="float: right; font-size: 30px;"></i></ion-checkbox>
         </ion-item>
         <ion-item>
             <span class="preferences-title">Age between:</span>
             <div class="range">
               <span class="preferences-title">16j </span>
-              <input type="range" ng-model="ageSlider.value" min="{{ageSlider.min}}" max="{{ageSlider.max}}" name="age">
-              <span class="preferences-title">{{ageSlider.value}}j</span>
+              <input type="range" ng-model="user.prefAge" min="{{ageSlider.min}}" max="{{ageSlider.max}}" name="age">
+              <span class="preferences-title">{{user.prefAge | num}}j</span>
             </div>
         </ion-item>
         <ion-item>
@@ -48,8 +52,8 @@
             <span class="preferences-title">Max. distance:</span>
             <div class="range">
               <span class="preferences-title">Okm</span>
-              <input type="range" ng-model="distanceSlider.value" min="{{distanceSlider.min}}" max="{{distanceSlider.max}}" name="volume">
-              <span class="preferences-title">{{distanceSlider.value}}km</span>
+              <input type="range" ng-model="user.prefDistance" min="{{distanceSlider.min}}" max="{{distanceSlider.max}}" name="volume">
+              <span class="preferences-title">{{user.prefDistance | num}}km</span>
             </div>
         </ion-item>
         <button class="button button-full button-custom" ng-click="saveProfile()">Save my profile</button>

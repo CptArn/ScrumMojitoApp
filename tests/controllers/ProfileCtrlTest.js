@@ -26,22 +26,26 @@ describe('ProfileCtrl', function() {
 							prefTrans: false
 						});
 
-		expect($scope.user).toEqual({name: "Arne Vlaeminck",email: "arne.vlaeminck@student.odisee.be",school: "Odisee, Gent",about: "fun guy, javascript is life"});
-		expect($scope.gender).toEqual({ male: false, female: true, trans: false });
-		expect($scope.ageSlider).toEqual({value: 18,min: 16,max: 99});
-		expect($scope.distanceSlider).toEqual({value: 10,min: 0,max: 40});
-		expect($scope.locations).toEqual([{id: 1, value: "Gent"}, {id: 2, value: "Kortrijk"}, {id: 3, value: "Leuven"}, {id: 4, value: "Brussel"}]);
+		expect($scope.user).toEqual({
+				id: 10210995798960326,
+				firstname: "Arne",
+				lastname: "Vlaeminck",
+				email: "arne.vlaeminck@student.odisee.be",
+				// school: "Odisee, Gent",
+				// about: "fun guy, javascript is life",
+				prefMale: false,
+	            prefFemale: true,
+	            prefTrans: false,
+	            prefAge: 18,
+	            prefDistance: 10,
+	            prefLocation: 1
+			});
 	});
 	it('updating of user information', function() {
-		$scope.gender = { male: false, female: true, trans: false };
-		// $scope.user.email = "javascript4life@web.com";
-	    // $scope.ageSlider.value = 20;
-	    // $scope.distanceSlider.value = 2;
+		$scope.user.prefMale = true;
+
 		$scope.saveProfile();
-		expect($scope.gender).toEqual({ male: false, female: true, trans: false });
-		// expect($scope.user.email).toEqual("javascript4life@web.com");
-		// expect($scope.ageSlider.value).toEqual(20);
-		// expect($scope.distanceSlider.value).toEqual(2);
+		expect($scope.user.prefMale).toEqual(true);
 	});
 	it('change location id', function() {
 		$scope.changed(3);

@@ -59,40 +59,61 @@ angular.module('starter.controllers', [])
             prefDistance: data.prefDistance,
             prefLocation: data.prefLocation
         };
-        
+
         // Age slider options
         $scope.ageSlider = {
-            //    value: data.prefAge, // Age offset
-            min: 16,
-            max: 99
+            min: data.prefAge,
+            max: 75,
+            options: {
+                floor: 18,
+                ceil: 100
+            }
+        };
+        // Distance slider options
+        $scope.distanceSlider = {
+            value: 10,
+            options: {
+                floor: 0,
+                ceil: 40
+            }
         };
 
         // Location preference
         $scope.selectedLocation = data.prefLocation;
 
-        // Distance slider options
-        $scope.distanceSlider = {
-        //  value: data.prefDistance,
-         min: 0,
-         max: 40
-        };
+
     };
 
     // Save all profile settings
     $scope.saveProfile = function() {
         // Post to API
-        $scope.user.prefAge = parseInt($scope.user.prefAge);
-        $scope.user.prefDistance = parseInt($scope.user.prefDistance);
-        $scope.user.prefLocation = $scope.locationId;
+        $scope.user.prefAge = parseInt($scope.ageSlider.min);
+        $scope.user.prefDistance = parseInt($scope.distanceSlider.value);
+        $scope.user.prefLocation = 2;
         console.log($scope.user);
-        $scope.data = {"id":0,"email":"arne.vlaeminck@student.odisee.be","firstname":"Arne","lastname":"Vlaeminck","location":"Gent","age":20,"prefMale":true,"prefFemale":true,"prefTrans":false,"prefAge":18,"prefDistance":10,"prefLocation":1};
+        // $scope.data = {"id":0,"email":"arne.vlaeminck@student.odisee.be","firstname":"Arne","lastname":"Vlaeminck","location":"Gent","age":20,"prefMale":true,"prefFemale":true,"prefTrans":false,"prefAge":18,"prefDistance":10,"prefLocation":1};
 
-        // $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', {user: $scope.data}).success(function(data) {
-        //  console.log('data: ');
-        //     console.log(data);
-        // }).error(function(error) {
-        //   console.log(error);
-        // });
+        console.log($scope.ageSlider.min);
+        console.log($scope.ageSlider.max);
+        console.log($scope.distanceSlider.value);
+
+
+
+        // var res = $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', $scope.data);
+        //         res.success(function(data, status, headers, config) {
+        //           $scope.message = data;
+        //         });
+        //         res.error(function(data, status, headers, config) {
+        //           alert( "failure message: " + JSON.stringify({data: data}));
+        //         });
+
+        $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', $scope.user).success(function(data) {
+         console.log('data: ');
+            console.log(data);
+        }).error(function(error) {
+          console.log(error);
+        });
+
         // $http({
         //   method: 'POST',
         //   url: 'http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update',

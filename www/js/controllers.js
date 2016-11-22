@@ -92,8 +92,6 @@ angular.module('starter.controllers', [])
        };
         // Location preference
         $scope.selectedLocation = data.prefLocation;
-
-
     };
 
     // Save all profile settings

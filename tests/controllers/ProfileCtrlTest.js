@@ -25,7 +25,8 @@ describe('ProfileCtrl', function() {
 							prefMale: false,
 							prefTrans: false
 						});
-
+						console.log('user: ');
+		console.log($scope.user);
 		expect($scope.user).toEqual({
 				id: 10210995798960326,
 				firstname: "Arne",

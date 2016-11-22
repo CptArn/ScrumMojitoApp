@@ -15,9 +15,9 @@ describe('DashboardCtrl', function() {
 	}));
 
 
-	it('should receive name', function() {
-		// HTTP unit test
-	});
+	// it('should receive name', function() {
+	// 	// HTTP unit test
+	// });
 
 
 });

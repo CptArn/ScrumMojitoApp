@@ -60,24 +60,36 @@ angular.module('starter.controllers', [])
             prefLocation: data.prefLocation
         };
 
-        // Age slider options
-        $scope.ageSlider = {
-            min: data.prefAge,
-            max: 75,
-            options: {
-                floor: 18,
-                ceil: 100
-            }
-        };
-        // Distance slider options
-        $scope.distanceSlider = {
-            value: 10,
-            options: {
-                floor: 0,
-                ceil: 40
-            }
-        };
+        // // Age slider options
+        // $scope.ageSlider = {
+        //     min: data.prefAge,
+        //     max: 75,
+        //     options: {
+        //         floor: 18,
+        //         ceil: 100
+        //     }
+        // };
+        // // Distance slider options
+        // $scope.distanceSlider = {
+        //     value: 10,
+        //     options: {
+        //         floor: 0,
+        //         ceil: 40
+        //     }
+        // };
 
+        // Age slider options
+       $scope.ageSlider = {
+           value: data.prefAge, // Age offset
+           min: 16,
+           max: 99
+       };
+       // Distance slider options
+       $scope.distanceSlider = {
+           value: data.prefDistance,
+           min: 0,
+           max: 40
+       };
         // Location preference
         $scope.selectedLocation = data.prefLocation;
 
@@ -87,25 +99,9 @@ angular.module('starter.controllers', [])
     // Save all profile settings
     $scope.saveProfile = function() {
         // Post to API
-        $scope.user.prefAge = parseInt($scope.ageSlider.min);
-        $scope.user.prefDistance = parseInt($scope.distanceSlider.value);
         $scope.user.prefLocation = 2;
-        console.log($scope.user);
-        // $scope.data = {"id":0,"email":"arne.vlaeminck@student.odisee.be","firstname":"Arne","lastname":"Vlaeminck","location":"Gent","age":20,"prefMale":true,"prefFemale":true,"prefTrans":false,"prefAge":18,"prefDistance":10,"prefLocation":1};
-
-        console.log($scope.ageSlider.min);
-        console.log($scope.ageSlider.max);
-        console.log($scope.distanceSlider.value);
-
-
-
-        // var res = $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', $scope.data);
-        //         res.success(function(data, status, headers, config) {
-        //           $scope.message = data;
-        //         });
-        //         res.error(function(data, status, headers, config) {
-        //           alert( "failure message: " + JSON.stringify({data: data}));
-        //         });
+        $scope.user.prefAge = parseInt($scope.user.prefAge);
+        $scope.user.prefDistance = parseInt($scope.user.prefDistance);
 
         $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', $scope.user).success(function(data) {
          console.log('data: ');
@@ -114,19 +110,6 @@ angular.module('starter.controllers', [])
           console.log(error);
         });
 
-        // $http({
-        //   method: 'POST',
-        //   url: 'http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update',
-        //   headers: {
-        //   'Content-Type': 'application/json'
-        //     },
-        //     data: { user: $scope.data }
-        // }).then(function successCallback(response) {
-        //     console.log(response);
-        //   }, function errorCallback(response) {
-        //     // called asynchronously if an error occurs
-        //     // or server returns response with an error status.
-        //   });
     };
 
     // Save location when option is changed

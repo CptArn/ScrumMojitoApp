@@ -28,7 +28,23 @@ angular.module('starter.controllers', [])
     $scope.ageSlider = [];
     $scope.distanceSlider = [];
     $scope.selectedLocation = [];
-
+    // Age slider options
+    $scope.ageSlider = {
+        min: 18,
+        max: 75,
+        options: {
+            floor: 18,
+            ceil: 100
+        }
+    };
+    // Distance slider options
+    $scope.distanceSlider = {
+        value: 10,
+        options: {
+            floor: 0,
+            ceil: 40
+        }
+    };
     // Dropdown location options
     $scope.locations = [{id: 1, value: "Gent"}, {id: 2, value: "Kortrijk"}, {id: 3, value: "Leuven"}, {id: 4, value: "Brussel"}];
 
@@ -60,36 +76,20 @@ angular.module('starter.controllers', [])
             prefLocation: data.prefLocation
         };
 
-        // // Age slider options
-        // $scope.ageSlider = {
-        //     min: data.prefAge,
-        //     max: 75,
-        //     options: {
-        //         floor: 18,
-        //         ceil: 100
-        //     }
-        // };
-        // // Distance slider options
-        // $scope.distanceSlider = {
-        //     value: 10,
-        //     options: {
-        //         floor: 0,
-        //         ceil: 40
-        //     }
-        // };
+
 
         // Age slider options
-       $scope.ageSlider = {
-           value: data.prefAge, // Age offset
-           min: 16,
-           max: 99
-       };
-       // Distance slider options
-       $scope.distanceSlider = {
-           value: data.prefDistance,
-           min: 0,
-           max: 40
-       };
+    //    $scope.ageSlider = {
+    //        value: data.prefAge, // Age offset
+    //        min: 16,
+    //        max: 99
+    //    };
+    //    // Distance slider options
+    //    $scope.distanceSlider = {
+    //        value: data.prefDistance,
+    //        min: 0,
+    //        max: 40
+    //    };
         // Location preference
         $scope.selectedLocation = data.prefLocation;
     };

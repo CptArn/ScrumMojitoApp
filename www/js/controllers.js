@@ -28,23 +28,24 @@ angular.module('starter.controllers', [])
     $scope.ageSlider = [];
     $scope.distanceSlider = [];
     $scope.selectedLocation = [];
-    // Age slider options
-    $scope.ageSlider = {
-        min: 18,
-        max: 75,
-        options: {
-            floor: 18,
-            ceil: 100
-        }
-    };
-    // Distance slider options
-    $scope.distanceSlider = {
-        value: 10,
-        options: {
-            floor: 0,
-            ceil: 40
-        }
-    };
+    // // Age slider options
+    // $scope.ageSlider = {
+    //     min: 18,
+    //     max: 75,
+    //     options: {
+    //         floor: 18,
+    //         ceil: 100
+    //     }
+    // };
+    // // Distance slider options
+    // $scope.distanceSlider = {
+    //     value: 10,
+    //     options: {
+    //         floor: 0,
+    //         ceil: 40
+    //     }
+    // };
+
     // Dropdown location options
     $scope.locations = [{id: 1, value: "Gent"}, {id: 2, value: "Kortrijk"}, {id: 3, value: "Leuven"}, {id: 4, value: "Brussel"}];
 
@@ -62,34 +63,32 @@ angular.module('starter.controllers', [])
     $scope.setProfile = function(data) {
          // User info
         $scope.user = {
+            age: data.age,
             id: data.id,
             firstname: data.firstname,
             lastname: data.lastname,
             email: data.email,
-            // school: "Odisee, Gent",
-            // about: "fun guy, javascript is life",
             prefMale: data.prefMale,
             prefFemale: data.prefFemale,
             prefTrans: data.prefTrans,
             prefAge: data.prefAge,
             prefDistance: data.prefDistance,
-            prefLocation: data.prefLocation
+            prefLocation: data.prefLocation,
+            location: data.location
         };
 
-
-
         // Age slider options
-    //    $scope.ageSlider = {
-    //        value: data.prefAge, // Age offset
-    //        min: 16,
-    //        max: 99
-    //    };
-    //    // Distance slider options
-    //    $scope.distanceSlider = {
-    //        value: data.prefDistance,
-    //        min: 0,
-    //        max: 40
-    //    };
+           $scope.ageSlider = {
+               value: data.prefAge, // Age offset
+               min: 16,
+               max: 99
+           };
+           // Distance slider options
+           $scope.distanceSlider = {
+               value: data.prefDistance,
+               min: 0,
+               max: 40
+           };
         // Location preference
         $scope.selectedLocation = data.prefLocation;
     };
@@ -101,21 +100,38 @@ angular.module('starter.controllers', [])
         $scope.user.prefAge = parseInt($scope.user.prefAge);
         $scope.user.prefDistance = parseInt($scope.user.prefDistance);
 
-        $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', $scope.user).success(function(data) {
-         console.log('data: ');
-            console.log(data);
-        }).error(function(error) {
-          console.log(error);
-        });
+        console.log($scope.user);
+
+        // $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', $scope.user).success(function(data) {
+        //  console.log('data: ');
+        //     console.log(data);
+        // }).error(function(error) {
+        //   console.log(error);
+        // });
 
     };
 
+    // $scope.login = function() {
+    //     //
+    //     // $http.get('https://www.facebook.com/dialog/oauth?client_id=1794346987494326&redirect_uri=https://studyfindr.herokuapp.com/auth/facebook').success(function(data) {
+    //     //     console.log('Login data: ');
+    //     //     console.log(data);
+    //     // }).error(function(error) {
+    //     //   console.log(error);
+    //     // });
+    //     FB.login();
+    // };
+
     // Save location when option is changed
     $scope.changed = function(id) {
-        console.log(id);
         $scope.locationId = id;
     };
 })
 
 .controller('MatchesCtrl', function($scope, $stateParams) {
+})
+
+.controller('LoginCtrl', function($scope, $stateParams) {
+
+
 });

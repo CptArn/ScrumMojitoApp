@@ -37,14 +37,15 @@
         <ion-item>
             <span class="preferences-title">Age between:</span>
             <div class="range">
-              <!-- <span class="preferences-title">16j </span>
-              <input type="range" ng-model="user.prefAge" min="{{ageSlider.min}}" max="{{ageSlider.max}}" name="age"> -->
-              <rzslider
+              <span class="preferences-title">16j </span>
+              <input type="range" ng-model="user.prefAge" min="{{ageSlider.min}}" max="{{ageSlider.max}}" name="age">
+             <span class="preferences-title">{{user.prefAge | num}}j</span>
+              <!-- <rzslider
                   rz-slider-model="ageSlider.min"
                   rz-slider-high="ageSlider.max"
                   rz-slider-options="ageSlider.options">
-              </rzslider>
-              <!-- <span class="preferences-title">{{user.prefAge | num}}j</span> -->
+              </rzslider> -->
+
             </div>
 
         </ion-item>
@@ -57,15 +58,17 @@
         <ion-item>
             <span class="preferences-title">Max. distance:</span>
             <div class="range">
-              <!-- <span class="preferences-title">Okm</span>
+              <span class="preferences-title">Okm</span>
               <input type="range" ng-model="user.prefDistance" min="{{distanceSlider.min}}" max="{{distanceSlider.max}}" name="volume">
-              <span class="preferences-title">{{user.prefDistance | num}}km</span> -->
-            <rzslider
+              <span class="preferences-title">{{user.prefDistance | num}}km</span>
+            <!-- <rzslider
                 rz-slider-model="distanceSlider.value"
-                rz-slider-options="distanceSlider.options"></rzslider>
+                rz-slider-options="distanceSlider.options"></rzslider> -->
             </div>
         </ion-item>
         <button class="button button-full button-custom" ng-click="saveProfile()">Save my profile</button>
+        <button class="button button-full button-custom" ng-click="login()">FACEBOOK LOGIN TEST</button>
+
     </ion-list>
   </ion-content>
 </ion-view>

@@ -125,3 +125,18 @@ input[type=range]::-webkit-slider-thumb {
 .bar-stable + .bar-header{
     background-color: #06a296 ;
 }
+button#facebook {
+    border-color: #2d5073;
+    background-color: #3b5998;
+}
+.vertical-center {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding: 20px;
+}
+.sign-in {
+    display: table !important;
+    width: 100% !important;
+    height: 100% !important;
+}

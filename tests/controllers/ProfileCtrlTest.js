@@ -25,22 +25,20 @@ describe('ProfileCtrl', function() {
 							prefMale: false,
 							prefTrans: false
 						});
-						console.log('user: ');
-		console.log($scope.user);
-		expect($scope.user).toEqual({
-				id: 10210995798960326,
-				firstname: "Arne",
-				lastname: "Vlaeminck",
-				email: "arne.vlaeminck@student.odisee.be",
-				// school: "Odisee, Gent",
-				// about: "fun guy, javascript is life",
-				prefMale: false,
-	            prefFemale: true,
-	            prefTrans: false,
-	            prefAge: 18,
-	            prefDistance: 10,
-	            prefLocation: 1
-			});
+
+		expect($scope.user).toEqual({age: 21,
+							email: "arne.vlaeminck@student.odisee.be",
+							firstname: "Arne",
+							id: 10210995798960326,
+							lastname: "Vlaeminck",
+							location: 1,
+							prefAge: 18,
+							prefDistance: 10,
+							prefFemale: true,
+							prefLocation: 1,
+							prefMale: false,
+							prefTrans: false
+						});
 	});
 	it('updating of user information', function() {
 		$scope.user.prefMale = true;

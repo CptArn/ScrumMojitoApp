@@ -4,7 +4,6 @@ describe('ProfileCtrl', function() {
 	beforeEach(module('starter'));
 
 	beforeEach(inject(function(_$rootScope_, _$controller_){
-
 		$scope = _$rootScope_.$new();
 		$controller = _$controller_;
 
@@ -51,5 +50,5 @@ describe('ProfileCtrl', function() {
 		expect($scope.locationId).toEqual(3);
 	});
 
-
+	
 });

@@ -6,6 +6,8 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+    $scope.loggedIn = localStorage.getItem('FBuser');
+    console.log('app: ' + $scope.loggedIn);
 })
 
 .controller('DashboardCtrl', function($scope, $http) {
@@ -28,6 +30,8 @@ angular.module('starter.controllers', [])
     $scope.ageSlider = [];
     $scope.distanceSlider = [];
     $scope.selectedLocation = [];
+
+    $scope.user.id = localStorage.getItem('FBuser');
     // // Age slider options
     // $scope.ageSlider = {
     //     min: 18,
@@ -51,7 +55,7 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.beforeEnter', function() {
         // Get profile information from user ID
-        Profile.getProfile(10210995798960326).success(function(data) {
+        Profile.getProfile(10210995798960326).success(function(data) { //localStorage.getItem('user')
           console.log(data);
           $scope.setProfile(data);
         }).error(function(error) {
@@ -99,9 +103,7 @@ angular.module('starter.controllers', [])
         $scope.user.prefLocation = 2;
         $scope.user.prefAge = parseInt($scope.user.prefAge);
         $scope.user.prefDistance = parseInt($scope.user.prefDistance);
-
         console.log($scope.user);
-
         // $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', $scope.user).success(function(data) {
         //  console.log('data: ');
         //     console.log(data);
@@ -110,17 +112,6 @@ angular.module('starter.controllers', [])
         // });
 
     };
-
-    // $scope.login = function() {
-    //     //
-    //     // $http.get('https://www.facebook.com/dialog/oauth?client_id=1794346987494326&redirect_uri=https://studyfindr.herokuapp.com/auth/facebook').success(function(data) {
-    //     //     console.log('Login data: ');
-    //     //     console.log(data);
-    //     // }).error(function(error) {
-    //     //   console.log(error);
-    //     // });
-    //     FB.login();
-    // };
 
     // Save location when option is changed
     $scope.changed = function(id) {
@@ -131,7 +122,37 @@ angular.module('starter.controllers', [])
 .controller('MatchesCtrl', function($scope, $stateParams) {
 })
 
-.controller('LoginCtrl', function($scope, $stateParams) {
-
-
+.controller('LoginCtrl', function($scope, $stateParams, facebookService, $state) {
+    $scope.login = function() {
+        if(localStorage.getItem('FBuser')) {
+            localStorage.removeItem('FBuser');
+        }
+        else {
+            FB.getLoginStatus(function(response) {
+                // If login status = connected, user is already logged in, get user information
+              if (response.status === 'connected') {
+                console.log('Logged in.');
+                // Should be removed
+                facebookService.getUserInfo()
+                     .then(function(response) {
+                       console.log(response);
+                       localStorage.setItem('FBuser', response.id );
+                       $scope.loggedIn = response.id;
+                     }
+                );
+                $state.go('app.dashboard');
+              }
+              else { // Log in user
+                FB.login();
+                facebookService.getUserInfo()
+                     .then(function(response) {
+                    //    console.log(response);
+                       localStorage.setItem('FBuser', response.id );
+                       $state.go('/app/dashboard');
+                     }
+                );
+              }
+            });
+        }
+    };
 });

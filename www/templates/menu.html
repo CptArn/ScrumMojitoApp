@@ -27,9 +27,16 @@
         <ion-item menu-close href="#/app/profile">
           Profile
         </ion-item>
-        <ion-item menu-close href="#/login">
-          Login
-        </ion-item>
+        <div ng-show="loggedIn">
+            <ion-item menu-close href="#/login">
+              Logout
+            </ion-item>
+        </div>
+        <div ng-hide="loggedIn">
+            <ion-item menu-close href="#/login">
+              Login
+            </ion-item>
+        </div>
       </ion-list>
     </ion-content>
   </ion-side-menu>

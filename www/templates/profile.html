@@ -3,6 +3,7 @@
     <div class="profile-header">
         <img class="profile-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
         <h3 style="text-align: center;">{{user.firstname}} {{user.lastname}}</h3>
+        <h3 style="text-align: center;">id: {{user.id}}</h3>
     </div>
 
     <ion-list>
@@ -67,8 +68,6 @@
             </div>
         </ion-item>
         <button class="button button-full button-custom" ng-click="saveProfile()">Save my profile</button>
-        <button class="button button-full button-custom" ng-click="login()">FACEBOOK LOGIN TEST</button>
-
     </ion-list>
   </ion-content>
 </ion-view>

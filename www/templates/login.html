@@ -5,7 +5,7 @@
       <button class="button button-clear" ng-click="closeLogin()">Close</button>
     </div>
   </ion-header-bar>
-  <ion-content>
+  <ion-content scroll="false">
     <form ng-submit="doLogin()">
       <div class="list">
         <!-- <label class="item item-input">
@@ -16,9 +16,10 @@
           <span class="input-label">Password</span>
           <input type="password" ng-model="loginData.password">
         </label> -->
-        <!-- <label class="item"> -->
-        <button id="facebook" class="button button-block button-positive" type="submit"><i class="ion-social-facebook icon" style="float: left;"></i>Log in with Facebook</button>
-        <!-- </label> -->
+        <h2 id="login-slogan">Find students in your area and hook up with them!</h2>
+        <button id="facebook" class="button button-block button-positive" ng-click="login()"><i class="ion-social-facebook icon" style="float: left;"></i>Log in with Facebook</button>
+        <button class="button button-block button-assertive" ui-sref="app.profile">Or cri</button>
+
       </div>
     </form>
   </ion-content>

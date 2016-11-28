@@ -7,7 +7,6 @@ angular.module('starter.controllers', [])
 })
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
     $scope.loggedIn = localStorage.getItem('ID') != '';
-    console.log('app: ' + $scope.loggedIn);
 })
 
 .controller('DashboardCtrl', function($scope, $http) {
@@ -139,7 +138,7 @@ angular.module('starter.controllers', [])
 .controller('MatchesCtrl', function($scope, $stateParams) {
 })
 
-.controller('LoginCtrl', function($scope, $stateParams, $state, $http) {
+.controller('LoginCtrl', function($scope, $stateParams, $state, $http, Account) {
     $scope.login = function() {
         if(localStorage.getItem('ID')) {
             localStorage.removeItem('accessToken');
@@ -150,99 +149,30 @@ angular.module('starter.controllers', [])
               console.log(response);
               // If login status = connected, user is already logged in, get user information
               if (response.status === 'connected') {
-                    console.log('Logged in.');
-                    var url = 'http://studyfindr.herokuapp.com/facebook/login';
-                    var $uid = response.authResponse.userID;
-                    var $accessToken = response.authResponse.accessToken;
-                    var data = {
-                      accessToken: $accessToken,
-                      id: $uid
-                    };
-                    $http({
-                        method: 'POST',
-                        url: url,
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                        transformRequest: function(obj) {
-                            var str = [];
-                            for(var p in obj)
-                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                            return str.join("&");
-                        },
-                        data: {accessToken: $accessToken, id: $uid}
-                    }).success(function () {
-                      localStorage.setItem('ID', data.id);
-                      localStorage.setItem('accessToken', data.accessToken);
-                    }).error(function(error) {
-                      console.log(error);
-                    });
+                    console.log(response);
+                    Account.login(response);
                     $state.go('app.dashboard');
               }
               else { // Log in user
                 FB.login();
                 FB.getLoginStatus(function(response) {
-                  console.log(response);
+                  console.log(response)
                   // If login status = connected, user is already logged in, get user information
                   if (response.status === 'connected') {
-                        console.log('Logged in.');
-                        var url = 'http://studyfindr.herokuapp.com/facebook/login';
-                        var $uid = response.authResponse.userID;
-                        var $accessToken = response.authResponse.accessToken;
-                        var data = {
-                          accessToken: $accessToken,
-                          id: $uid
-                        };
-                        $http({
-                            method: 'POST',
-                            url: url,
-                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                            transformRequest: function(obj) {
-                                var str = [];
-                                for(var p in obj)
-                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                                return str.join("&");
-                            },
-                            data: {accessToken: $accessToken, id: $uid}
-                        }).success(function () {
-                          localStorage.setItem('ID', data.id);
-                          localStorage.setItem('accessToken', data.accessToken);
-                        }).error(function(error) {
-                          console.log(error);
-                        });
+                        Account.login(response);
                         $state.go('app.profile');
-                      }
-                  });
+                    }
+                });
               }
             });
         }
     };
 })
 
-.controller('LogoutCtrl', function($scope, $stateParams, $state, $http) {
+.controller('LogoutCtrl', function($scope, $stateParams, $state, $http, Account) {
     $scope.logout = function() {
         if(localStorage.getItem('ID')) {
-          var url = 'https://studyfindr.herokuapp.com/facebook/logout';
-          var data = {
-            accessToken: localStorage.getItem('accessToken'),
-            id: localStorage.getItem('ID')
-          };
-          $http({
-              method: 'POST',
-              url: url,
-              headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-              transformRequest: function(obj) {
-                  var str = [];
-                  for(var p in obj)
-                  str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                  return str.join("&");
-              },
-              data: {accessToken: data.accessToken, id: data.id}
-          }).success(function() {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('ID');
-            $state.go('login');
-          }).error( function(error) {
-            console.log(error);
-          })
+            Account.logout();
         }
     };
 });

@@ -21,6 +21,57 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   });
 })
+.run(['$rootScope', '$window', function($rootScope, $window) {
+  $window.fbAsyncInit = function() {
+    // Executed when the SDK is loaded
+    FB.init({
+      appId: '1794346987494326',
+      channelUrl: 'app/channel.html',
+      status: true,
+      cookie: true,
+      xfbml: true,
+      version: 'v2.8'
+    });
+  };
+  (function(d){
+    // load the Facebook javascript SDK
+    var js,
+    id = 'facebook-jssdk',
+    ref = d.getElementsByTagName('script')[0];
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement('script');
+    js.id = id;
+    js.async = true;
+    js.src = "//connect.facebook.net/en_US/all.js";
+    ref.parentNode.insertBefore(js, ref);
+  }(document));
+}])
+
+.factory('clientHttpErrorInterceptor', ['$q', '$injector', function ($q, $injector) {
+  return {
+    request: function(request) {
+              return request;
+            },
+            // This is the responseError interceptor
+            responseError: function(rejection) {
+              if (rejection.status === 401) {
+                console.log('responseError' + rejection);
+                //$injector.get('Account').refreshToken();
+              }
+
+              /* If not a 401, do nothing with this error.
+               * This is necessary to make a `responseError`
+               * interceptor a no-op. */
+              return $q.reject(rejection);
+            }
+          };
+
+        }])
+.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('clientHttpErrorInterceptor');
+})
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider

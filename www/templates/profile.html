@@ -1,9 +1,8 @@
 <ion-view view-title="My Profile">
   <ion-content>
     <div class="profile-header">
-        <img class="profile-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
+        <img ng-src="http://graph.facebook.com/{{id}}/picture?type=large" alt="Profile picture" class="profile-image" />
         <h3 style="text-align: center;">{{user.firstname}} {{user.lastname}}</h3>
-        <h3 style="text-align: center;">id: {{user.id}}</h3>
     </div>
 
     <ion-list>

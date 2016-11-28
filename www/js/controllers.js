@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
-    $scope.loggedIn = localStorage.getItem('FBuser');
+    $scope.loggedIn = localStorage.getItem('ID') != '';
     console.log('app: ' + $scope.loggedIn);
 })
 
@@ -28,8 +28,7 @@ angular.module('starter.controllers', [])
     $scope.ageSlider = [];
     $scope.distanceSlider = [];
     $scope.selectedLocation = [];
-
-    $scope.user.id = localStorage.getItem('FBuser');
+    $scope.id = localStorage.getItem('ID');
     // // Age slider options
     // $scope.ageSlider = {
     //     min: 18,
@@ -122,8 +121,9 @@ angular.module('starter.controllers', [])
 
 .controller('LoginCtrl', function($scope, $stateParams, $state, $http) {
     $scope.login = function() {
-        if(localStorage.getItem('FBuser')) {
-            localStorage.removeItem('FBuser');
+        if(localStorage.getItem('ID')) {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('ID');
         }
         else {
             FB.getLoginStatus(function(response) {
@@ -188,11 +188,41 @@ angular.module('starter.controllers', [])
                         }).error(function(error) {
                           console.log(error);
                         });
-                        $state.go('app.dashboard');
+                        $state.go('app.profile');
                       }
                   });
               }
             });
+        }
+    };
+})
+
+.controller('LogoutCtrl', function($scope, $stateParams, $state, $http) {
+    $scope.logout = function() {
+        if(localStorage.getItem('ID')) {
+          var url = 'https://studyfindr.herokuapp.com/facebook/logout';
+          var data = {
+            accessToken: localStorage.getItem('accessToken'),
+            id: localStorage.getItem('ID')
+          };
+          $http({
+              method: 'POST',
+              url: url,
+              headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+              transformRequest: function(obj) {
+                  var str = [];
+                  for(var p in obj)
+                  str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                  return str.join("&");
+              },
+              data: {accessToken: data.accessToken, id: data.id}
+          }).success(function() {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('ID');
+            $state.go('login');
+          }).error( function(error) {
+            console.log(error);
+          })
         }
     };
 });

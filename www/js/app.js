@@ -63,10 +63,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: '/login',
       templateUrl: 'templates/login.html',
       controller: 'LoginCtrl'
+    })
+
+    .state('logout', {
+      url: '/logout',
+      templateUrl:'templates/logout.html',
+      controller: 'LogoutCtrl'
     });
 
   // if none of the above states are matched, use this as the fallback
-    if(localStorage.getItem('FBuser')) {
+    if(localStorage.getItem('ID')) {
         // console.log('user logged in');
         $urlRouterProvider.otherwise('app/profile');
     }else {

@@ -1,11 +1,11 @@
 <ion-view view-title="Dashboard">
   <ion-content>
     <ion-list>
-        <div class="card" ng-repeat="user in users">
+        <div class="card" ng-repeat="user in users track by $index">
             <div class="item item-text-wrap">
                 <div class="item item-avatar">
                     <img class="full-image" ng-src="http://graph.facebook.com/{{user.id}}/picture?type=large" />
-                    <a href="#"><i class="icon ion-ios-heart-outline" style="float: right; font-size: 30px;"></i></a>
+                    <button id="heart" class="button" ng-click="favorite(user.id)" style="float: right; font-size: 30px;"><i class="icon ion-ios-heart-outline"></i></button>
                     <h2>{{ user.firstname }} {{ user.lastname }} ({{ user.age }})</h2>
                     <p>{{ user.location }}</p>
                     <div>

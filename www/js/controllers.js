@@ -11,13 +11,34 @@ angular.module('starter.controllers', [])
 })
 
 .controller('DashboardCtrl', function($scope, $http) {
-
         $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=testtoken&id=10').success(function(data) {
           $scope.users = data;
         }).error(function(error) {
           $scope.users = "Sorry, something went wrong with our server";
           console.log(error);
       });
+
+      $scope.favorite = function(favorite_id) {
+        var url = 'http://studyfindr.herokuapp.com/user/' + favorite_id + 'like';
+        var $accessToken = 'testToken';
+        var $id = 10;
+        $http({
+            method: 'POST',
+            url: url,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            transformRequest: function(obj) {
+                var str = [];
+                for(var p in obj)
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: {id_to_like: favorite_id, accessToken: $accessToken, id: $uid}
+        }).success(function () {
+          $state.reload();
+        }).error(function(error) {
+          console.log(error);
+        });
+      };
 })
 
 // Controller for user profile page

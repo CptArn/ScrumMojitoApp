@@ -12,10 +12,12 @@ describe('LoginCtrl', function() {
 
     // Test for Facebook login
 	it('test logging in', function() {
-        $scope.loggedIn = true;
-		localStorage.setItem('FBuser', '1234');
-		
-		expect(localStorage.getItem('FBuser')).toEqual('1234');
+    $scope.loggedIn = true;
+		localStorage.setItem('ID', '1234');
+		localStorage.setItem('accessToken', 'acbd')
+
+		expect(localStorage.getItem('ID')).toEqual('1234');
+		expect(localStorage.getItem('accessToken')).toEqual('abcd');
 		expect($scope.loggedIn).toEqual(true);
 	});
 });

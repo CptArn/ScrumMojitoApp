@@ -1,48 +1,19 @@
 <ion-view view-title="Dashboard">
   <ion-content>
     <ion-list>
-        <div class="card">
+        <div class="card" ng-repeat="user in users">
             <div class="item item-text-wrap">
                 <div class="item item-avatar">
-                    <img class="full-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
+                    <img class="full-image" ng-src="http://graph.facebook.com/{{user.id}}/picture?type=large" />
                     <a href="#"><i class="icon ion-ios-heart-outline" style="float: right; font-size: 30px;"></i></a>
-                    <h2>{{helloWorld.content}}</h2>
-                    <p>Odisee, Gent</p>
+                    <h2>{{ user.firstname }} {{ user.lastname }} ({{ user.age }})</h2>
+                    <p>{{ user.location }}</p>
                     <div>
                         About...
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="card">
-            <div class="item item-text-wrap">
-                <div class="item item-avatar">
-                    <img class="full-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
-                    <a href="#"><i class="icon ion-ios-heart-outline" style="float: right; font-size: 30px;"></i></a>
-                    <h2>{{helloWorld.content}}</h2>
-                    <p>Odisee, Gent</p>
-                    <div>
-                        About...
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="item item-text-wrap">
-                <div class="item item-avatar">
-                    <img class="full-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
-                    <a href="#"><i class="icon ion-ios-heart-outline" style="float: right; font-size: 30px;"></i></a>
-                    <h2>{{helloWorld.content}}</h2>
-                    <p>Odisee, Gent</p>
-                    <div>
-                        About...
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </ion-list>
   </ion-content>
 </ion-view>

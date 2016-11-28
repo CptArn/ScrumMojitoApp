@@ -12,11 +12,10 @@ angular.module('starter.controllers', [])
 
 .controller('DashboardCtrl', function($scope, $http) {
 
-        $http.get('https://student-dating-test.herokuapp.com/greeting?name=Arne').success(function(data) {
-          $scope.helloWorld = data;
-          console.log('data: ' + data.content);
+        $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=testtoken&id=10').success(function(data) {
+          $scope.users = data;
         }).error(function(error) {
-          $scope.helloWorld = "Sorry, something went wrong with our server";
+          $scope.users = "Sorry, something went wrong with our server";
           console.log(error);
       });
 })

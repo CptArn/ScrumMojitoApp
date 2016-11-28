@@ -120,7 +120,7 @@ angular.module('starter.controllers', [])
 .controller('MatchesCtrl', function($scope, $stateParams) {
 })
 
-.controller('LoginCtrl', function($scope, $stateParams, facebookService, $state, $http) {
+.controller('LoginCtrl', function($scope, $stateParams, $state, $http) {
     $scope.login = function() {
         if(localStorage.getItem('FBuser')) {
             localStorage.removeItem('FBuser');

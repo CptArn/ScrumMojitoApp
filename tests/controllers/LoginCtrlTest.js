@@ -14,7 +14,7 @@ describe('LoginCtrl', function() {
 	it('test logging in', function() {
     $scope.loggedIn = true;
 		localStorage.setItem('ID', '1234');
-		localStorage.setItem('accessToken', 'acbd')
+		localStorage.setItem('accessToken', 'abcd')
 
 		expect(localStorage.getItem('ID')).toEqual('1234');
 		expect(localStorage.getItem('accessToken')).toEqual('abcd');

@@ -16,11 +16,11 @@ describe('Facebook Service test', function(){
                     id: 10210995798960326,
                 };
     // Test get profile info
-    // it('should return profile', function() {
-    //     $httpBackend.when('GET', '/me').respond(200, user);
-    //     facebookService.getUserInfo().success(function(data) {
-    //         expect(data.id).toEqual(10210995798960326);
-    //     });
-    //     $httpBackend.flush();
-    // });
+    it('should return profile', function() {
+        $httpBackend.when('GET', '/me').respond(200, user);
+        facebookService.getUserInfo().success(function(data) {
+            expect(data.id).toEqual(10210995798960326);
+        });
+        $httpBackend.flush();
+    });
 });

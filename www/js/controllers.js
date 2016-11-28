@@ -19,8 +19,6 @@ angular.module('starter.controllers', [])
           $scope.helloWorld = "Sorry, something went wrong with our server";
           console.log(error);
       });
-
-
 })
 
 // Controller for user profile page
@@ -55,7 +53,7 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.beforeEnter', function() {
         // Get profile information from user ID
-        Profile.getProfile(10210995798960326).success(function(data) { //localStorage.getItem('user')
+        Profile.getCurrentProfile().success(function(data) { //localStorage.getItem('user')
           console.log(data);
           $scope.setProfile(data);
         }).error(function(error) {
@@ -122,35 +120,77 @@ angular.module('starter.controllers', [])
 .controller('MatchesCtrl', function($scope, $stateParams) {
 })
 
-.controller('LoginCtrl', function($scope, $stateParams, facebookService, $state) {
+.controller('LoginCtrl', function($scope, $stateParams, facebookService, $state, $http) {
     $scope.login = function() {
         if(localStorage.getItem('FBuser')) {
             localStorage.removeItem('FBuser');
         }
         else {
             FB.getLoginStatus(function(response) {
-                // If login status = connected, user is already logged in, get user information
+              console.log(response);
+              // If login status = connected, user is already logged in, get user information
               if (response.status === 'connected') {
-                console.log('Logged in.');
-                // Should be removed
-                facebookService.getUserInfo()
-                     .then(function(response) {
-                       console.log(response);
-                       localStorage.setItem('FBuser', response.id );
-                       $scope.loggedIn = response.id;
-                     }
-                );
-                $state.go('app.dashboard');
+                    console.log('Logged in.');
+                    var url = 'http://studyfindr.herokuapp.com/facebook/login';
+                    var $uid = response.authResponse.userID;
+                    var $accessToken = response.authResponse.accessToken;
+                    var data = {
+                      accessToken: $accessToken,
+                      id: $uid
+                    };
+                    $http({
+                        method: 'POST',
+                        url: url,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        transformRequest: function(obj) {
+                            var str = [];
+                            for(var p in obj)
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            return str.join("&");
+                        },
+                        data: {accessToken: $accessToken, id: $uid}
+                    }).success(function () {
+                      localStorage.setItem('ID', data.id);
+                      localStorage.setItem('accessToken', data.accessToken);
+                    }).error(function(error) {
+                      console.log(error);
+                    });
+                    $state.go('app.dashboard');
               }
               else { // Log in user
                 FB.login();
-                facebookService.getUserInfo()
-                     .then(function(response) {
-                    //    console.log(response);
-                       localStorage.setItem('FBuser', response.id );
-                       $state.go('/app/dashboard');
-                     }
-                );
+                FB.getLoginStatus(function(response) {
+                  console.log(response);
+                  // If login status = connected, user is already logged in, get user information
+                  if (response.status === 'connected') {
+                        console.log('Logged in.');
+                        var url = 'http://studyfindr.herokuapp.com/facebook/login';
+                        var $uid = response.authResponse.userID;
+                        var $accessToken = response.authResponse.accessToken;
+                        var data = {
+                          accessToken: $accessToken,
+                          id: $uid
+                        };
+                        $http({
+                            method: 'POST',
+                            url: url,
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            transformRequest: function(obj) {
+                                var str = [];
+                                for(var p in obj)
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                return str.join("&");
+                            },
+                            data: {accessToken: $accessToken, id: $uid}
+                        }).success(function () {
+                          localStorage.setItem('ID', data.id);
+                          localStorage.setItem('accessToken', data.accessToken);
+                        }).error(function(error) {
+                          console.log(error);
+                        });
+                        $state.go('app.dashboard');
+                      }
+                  });
               }
             });
         }

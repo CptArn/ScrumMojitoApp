@@ -6,38 +6,54 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
-    $scope.loggedIn = localStorage.getItem('ID') != '';
+    $scope.loggedIn = localStorage.getItem('ID') !== '';
 })
 
 .controller('DashboardCtrl', function($scope, $http) {
-        $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=testtoken&id=10').success(function(data) {
-          $scope.users = data;
-        }).error(function(error) {
-          $scope.users = "Sorry, something went wrong with our server";
-          console.log(error);
-      });
 
-      $scope.favorite = function(favorite_id) {
-        var url = 'http://studyfindr.herokuapp.com/user/' + favorite_id + 'like';
-        var $accessToken = 'testToken';
-        var $id = 10;
-        $http({
-            method: 'POST',
-            url: url,
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            transformRequest: function(obj) {
-                var str = [];
-                for(var p in obj)
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                return str.join("&");
-            },
-            data: {id_to_like: favorite_id, accessToken: $accessToken, id: $uid}
-        }).success(function () {
-          $state.reload();
-        }).error(function(error) {
-          console.log(error);
+        $scope.$on('$ionicView.beforeEnter', function() {
+            $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=testtoken&id=10').success(function(data) {
+              $scope.users = data;
+
+            }).error(function(error) {
+              $scope.users = "Sorry, something went wrong with our server";
+              console.log(error);
+            });
         });
-      };
+        $scope.favorite = function(favorite_id) {
+            var url = 'http://studyfindr.herokuapp.com/user/' + favorite_id + '/like';
+            var $accessToken = 'testToken';
+            var $id = 10;
+            $http({
+                method: 'POST',
+                url: url,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data: {id_to_like: favorite_id, accessToken: $accessToken, id: $id}
+            }).success(function () {
+              $state.reload();
+            }).error(function(error) {
+              console.log(error);
+            });
+        };
+
+        // Check slider value to delete or like user
+        $scope.checkAction = function(value, user) {
+            console.log(user.id);
+            if(value == 100) {
+                // Add user to likes
+                $scope.favorite(user.id);
+                $scope.users.splice($scope.users.indexOf(user), 1);
+            } else if(value == -100) {
+                $scope.users.splice($scope.users.indexOf(user), 1);
+            }
+        };
+
 })
 
 // Controller for user profile page
@@ -156,7 +172,7 @@ angular.module('starter.controllers', [])
               else { // Log in user
                 FB.login();
                 FB.getLoginStatus(function(response) {
-                  console.log(response)
+                  console.log(response);
                   // If login status = connected, user is already logged in, get user information
                   if (response.status === 'connected') {
                         Account.login(response);

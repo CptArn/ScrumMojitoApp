@@ -1,17 +1,39 @@
 <ion-view view-title="Dashboard">
   <ion-content>
     <ion-list>
-        <div class="card" ng-repeat="user in users track by $index">
-            <div class="item item-text-wrap">
-                <div class="item item-avatar">
-                    <img class="full-image" ng-src="http://graph.facebook.com/{{user.id}}/picture?type=large" />
-                    <button id="heart" class="button" ng-click="favorite(user.id)" style="float: right; font-size: 30px;"><i class="icon ion-ios-heart-outline"></i></button>
-                    <h2>{{ user.firstname }} {{ user.lastname }} ({{ user.age }})</h2>
-                    <p>{{ user.location }}</p>
-                    <div>
-                        About...
-                    </div>
+        <!-- <ion-item ng-repeat="user in users track by $index" class="custom-item">
+            <div class="center-img">
+                <img class="dash-img" ng-src="http://graph.facebook.com/{{user.id}}/picture?type=large" />
+                <h2>{{ user.firstname }} {{ user.lastname }} ({{ user.age }})</h2>
+                <p>{{ user.location }}</p>
+                <div>
+                    <a href="#">About...</a>
                 </div>
+            </div>
+
+            <div class="range custom-range">
+                <i class="icon ion-ios-trash-outline dashboard-icon"></i>
+                <input type="range" ng-model="action" min="-100" max="100" name="like" ng-change="checkAction(action, user)">
+                <i class="icon ion-ios-heart-outline dashboard-icon"></i>
+                <!-- <i class="dashboard-icon" ng-class="{'ion-ios-heart-outline': liked == 0, 'ion-ios-heart' : liked == 1}"></i> -->
+            <!-- </div>
+        </ion-item> -->
+        <div ng-repeat="user in users track by $index" class="custom-item card">
+            <div class="center-img">
+                <img class="dash-img" ng-src="http://graph.facebook.com/{{user.id}}/picture?type=large" />
+                <h2>{{ user.firstname }} {{ user.lastname }} ({{ user.age }})</h2>
+                <p>{{ user.location }}</p>
+                <div>
+                    Toffe jongen enzo van die dingen. Programmeren is leuk.
+                    Javascript forever!
+                </div>
+            </div>
+
+            <div class="range custom-range">
+                <i class="icon ion-ios-trash-outline dashboard-icon"></i>
+                <input type="range" ng-model="action" min="-100" max="100" name="like" ng-change="checkAction(action, user)">
+                <i class="icon ion-ios-heart-outline dashboard-icon"></i>
+                <!-- <i class="dashboard-icon" ng-class="{'ion-ios-heart-outline': liked == 0, 'ion-ios-heart' : liked == 1}"></i> -->
             </div>
         </div>
     </ion-list>

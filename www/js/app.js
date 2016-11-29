@@ -128,7 +128,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         $urlRouterProvider.otherwise('app/profile');
     }else {
         // console.log('not logged in');
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise('/dashboard');
     }
+   // $urlRouterProvider.otherwise('/dashboard');
 
 });

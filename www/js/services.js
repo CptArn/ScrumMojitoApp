@@ -5,6 +5,7 @@ angular.module('starter.services', [])
         return $http.get('http://studyfindr.herokuapp.com/user/getmyinfo?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID'));
     };
     this.setProfile = function(id, data) {
+        // Y U DO DIS? ($scope.user.id???)
         return $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', data);
     };
 })
@@ -57,8 +58,8 @@ angular.module('starter.services', [])
         $state.go('login');
       }).error( function(error) {
         console.log(error);
-      })
-    }
+        });
+    };
     this.refreshToken = function() {
       var self = this;
       FB.getLoginStatus(function(FBresponse) {
@@ -68,5 +69,5 @@ angular.module('starter.services', [])
               $state.go('app.dashboard');
         }
       });
-    }
-})
+    };
+});

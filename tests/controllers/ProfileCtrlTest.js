@@ -39,12 +39,14 @@ describe('ProfileCtrl', function() {
 							prefTrans: false
 						});
 	});
+
 	it('updating of user information', function() {
 		$scope.user.prefMale = true;
 
 		$scope.saveProfile();
 		expect($scope.user.prefMale).toEqual(true);
 	});
+
 	it('change location id', function() {
 		$scope.changed(3);
 		expect($scope.locationId).toEqual(3);

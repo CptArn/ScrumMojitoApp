@@ -1,35 +1,19 @@
 <ion-view view-title="Matches">
   <ion-content>
         <ion-list>
-            <ion-item>
+            <ion-item ui-sref="app.chat({id: match.id})" ng-repeat="match in matches">
                 <div class="item-avatar">
-                    <img class="full-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
-                    <h2>Aisha</h2>
+                    <img class="full-img" ng-src="http://graph.facebook.com/{{match.id}}/picture?type=large" />
+
+                    <!-- <img class="full-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg"> -->
+                    <h2>{{match.firstname}} {{match.lastname}} - {{match.age}}j</h2>
                     <p>Odisee, Gent</p>
-                    <div>
-                        Hey Arne!
-                    </div>
                 </div>
-            </ion-item>
-            <ion-item>
-                <div class="item-avatar">
-                    <img class="full-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
-                    <h2>Lana</h2>
-                    <p>Odisee, Gent</p>
-                    <div>
-                        Start nu een gesprek!
-                    </div>
+                <div class="item-icon-right">
+                    <i class="icon ion-ios-arrow-right"></i>
                 </div>
+                <ion-option-button class="button-red" ng-click="delete(process)">Delete</ion-option-button>
             </ion-item>
-            <ion-item>
-                <div class="item-avatar">
-                    <img class="full-image" src="http://eskipaper.com/images/selena-gomez-brunette-girl-1.jpg">
-                    <h2>Evert</h2>
-                    <p>Odisee, Gent</p>
-                    <div>
-                        Start nu een gesprek!
-                    </div>
-                </div>
-            </ion-item>
+        </ion-list>
   </ion-content>
 </ion-view>

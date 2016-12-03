@@ -57,7 +57,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             // This is the responseError interceptor
             responseError: function(rejection) {
               if (rejection.status === 401) {
-                console.log('responseError' + rejection);
+                console.log('responseError');
+                console.log(rejection);
                 //$injector.get('Account').refreshToken();
               }
 
@@ -120,15 +121,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: '/logout',
       templateUrl:'templates/logout.html',
       controller: 'LogoutCtrl'
+    })
+    .state('app.chat', {
+        url: '/chat/:id',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/chat.html',
+            controller: 'ChatCtrl'
+          }
+        }
     });
+
 
   // if none of the above states are matched, use this as the fallback
     if(localStorage.getItem('ID')) {
         // console.log('user logged in');
-        $urlRouterProvider.otherwise('app/profile');
+        $urlRouterProvider.otherwise('app/dashboard');
     }else {
         // console.log('not logged in');
-        $urlRouterProvider.otherwise('/dashboard');
+        $urlRouterProvider.otherwise('/login');
     }
    // $urlRouterProvider.otherwise('/dashboard');
 

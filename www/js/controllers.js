@@ -10,20 +10,21 @@ angular.module('starter.controllers', [])
 })
 
 .controller('DashboardCtrl', function($scope, $http) {
-
-        $scope.$on('$ionicView.beforeEnter', function() {
-            $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=testtoken&id=10').success(function(data) {
+        console.log('user: ' + localStorage.getItem('ID'));
+        // $scope.$on('$ionicView.beforeEnter', function() {
+            $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=testtoken&id=' + localStorage.getItem('ID')).success(function(data) {
               $scope.users = data;
 
             }).error(function(error) {
               $scope.users = "Sorry, something went wrong with our server";
               console.log(error);
             });
-        });
-        $scope.favorite = function(favorite_id) {
+        // });
+
+        $scope.judge = function(favorite_id, like) {
             var url = 'http://studyfindr.herokuapp.com/user/' + favorite_id + '/like';
-            var $accessToken = 'testToken';
-            var $id = 10;
+            var $accessToken = 'testtoken';
+            var $id = localStorage.getItem('ID');
             $http({
                 method: 'POST',
                 url: url,
@@ -34,9 +35,9 @@ angular.module('starter.controllers', [])
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                     return str.join("&");
                 },
-                data: {id_to_like: favorite_id, accessToken: $accessToken, id: $id}
+                data: {id_to_like: favorite_id, accessToken: $accessToken, id: $id, like: like}
             }).success(function () {
-              $state.reload();
+                console.log('You said ' + like + ' to liking user: ' + favorite_id);
             }).error(function(error) {
               console.log(error);
             });
@@ -46,10 +47,10 @@ angular.module('starter.controllers', [])
         $scope.checkAction = function(value, user) {
             console.log(user.id);
             if(value == 100) {
-                // Add user to likes
-                $scope.favorite(user.id);
+                $scope.judge(user.id, true);
                 $scope.users.splice($scope.users.indexOf(user), 1);
             } else if(value == -100) {
+                $scope.judge(user.id, false);
                 $scope.users.splice($scope.users.indexOf(user), 1);
             }
         };
@@ -151,7 +152,65 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('MatchesCtrl', function($scope, $stateParams) {
+.controller('MatchesCtrl', function($scope, $stateParams, $http) {
+    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=testtoken&id=' + localStorage.getItem('ID')).success(function(data) {
+        console.log(data);
+        $scope.matches = data;
+    }).error(function() {
+
+    });
+
+})
+.controller('ChatCtrl', function($scope, $stateParams, $http, $ionicScrollDelegate, Profile) {
+    var match_id = $stateParams.id;
+    $scope.hideTime = true;
+    $scope.$on('$ionicView.beforeEnter', function() {
+        Profile.getUserInfo(match_id).success(function(data) {
+            $scope.match = data;
+            console.log($scope.match.firstname);
+        }).error(function(error) {
+            console.log(error);
+        });
+    });
+
+    var alternate;
+    $scope.sendMessage = function() {
+       alternate = !alternate;
+
+       var d = new Date();
+       d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+
+       $scope.messages.push({
+         userId: alternate ? localStorage.getItem('ID') : match_id,
+         text: $scope.data.message,
+         time: d
+       });
+
+    //    delete $scope.data.message;
+       $ionicScrollDelegate.scrollBottom(true);
+     };
+
+
+    //  $scope.inputUp = function() {
+    //    if (isIOS) $scope.data.keyboardHeight = 216;
+    //    $timeout(function() {
+    //      $ionicScrollDelegate.scrollBottom(true);
+    //    }, 300);
+    //  };
+
+    //  $scope.inputDown = function() {
+    //    if (isIOS) $scope.data.keyboardHeight = 0;
+    //    $ionicScrollDelegate.resize();
+    //  };
+
+     $scope.closeKeyboard = function() {
+       // cordova.plugins.Keyboard.close();
+     };
+
+
+     $scope.data = {};
+     $scope.myId = localStorage.getItem('ID');
+     $scope.messages = [];
 })
 
 .controller('LoginCtrl', function($scope, $stateParams, $state, $http, Account) {

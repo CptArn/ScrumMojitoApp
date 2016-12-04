@@ -59,7 +59,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
               if (rejection.status === 401) {
                 console.log('responseError');
                 console.log(rejection);
-                //$injector.get('Account').refreshToken();
+                $injector.get('Account').refreshToken();
               }
 
               /* If not a 401, do nothing with this error.

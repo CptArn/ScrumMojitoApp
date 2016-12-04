@@ -64,13 +64,15 @@ angular.module('starter.services', [])
         });
     };
     this.refreshToken = function() {
-      var self = this;
-      FB.getLoginStatus(function(FBresponse) {
-        // If login status = connected, user is already logged in, get user information
-        if (FBresponse.status === 'connected') {
-              self.login(FBresponse);
-              $state.go('app.dashboard');
-        }
+      facebookConnectPlugin.getAccessToken(function(token) {
+          if(localStorage.getItem('accessToken') == token) {
+            console.log("No new token needed");
+          }
+          else {
+            localStorage.setItem('accessToken', token);
+          }
+      }, function(err) {
+          alert("Could not get access token: " + err);
       });
     };
 });

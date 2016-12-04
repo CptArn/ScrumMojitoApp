@@ -220,8 +220,8 @@ angular.module('starter.controllers', [])
       return;
     }
     Account.login(response);
+    $ionicLoading.hide();
     $state.go('app.dashboard');
-    var authResponse = response.authResponse;
   };
   // This is the fail callback from the login method
   var fbLoginError = function(error){
@@ -291,11 +291,11 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('LogoutCtrl', function($scope, $stateParams, $state, $http, Account) {
+.controller('LogoutCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q, $ionicActionSheet) {
     $scope.showLogOutMenu = function() {
       var hideSheet = $ionicActionSheet.show({
         destructiveText: 'Logout',
-        titleText: 'Are you sure you want to logout? This app is awsome so I recommend you to stay.',
+        titleText: 'Are you sure you want to logout? This app is awesome so I recommend you to stay.',
         cancelText: 'Cancel',
         cancel: function() {},
         buttonClicked: function(index) {
@@ -316,10 +316,5 @@ angular.module('starter.controllers', [])
           });
         }
       });
-    };
-    $scope.logout = function() {
-        if(localStorage.getItem('ID')) {
-            Account.logout();
-        }
     };
 });

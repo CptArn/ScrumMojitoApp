@@ -213,7 +213,54 @@ angular.module('starter.controllers', [])
      $scope.messages = [];
 })
 
-.controller('LoginCtrl', function($scope, $stateParams, $state, $http, Account) {
+.controller('LoginCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q) {
+  var fbLoginSuccess = function(response) {
+    if (!response.authResponse){
+      fbLoginError("Cannot find the authResponse");
+      return;
+    }
+    Account.login(response);
+    $state.go('app.dashboard');
+    var authResponse = response.authResponse;
+  };
+  // This is the fail callback from the login method
+  var fbLoginError = function(error){
+    console.log('fbLoginError', error);
+    $ionicLoading.hide();
+  };
+  $scope.facebookSignIn = function() {
+    if(localStorage.getItem('ID')) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('ID');
+    }
+    facebookConnectPlugin.getLoginStatus(function(success){
+      if(success.status === 'connected'){
+        Account.login(success);
+        $state.go('app.dashboard');
+        // The user is logged in and has authenticated your app, and response.authResponse supplies
+        // the user's ID, a valid access token, a signed request, and the time the access token
+        // and signed request each expire
+        console.log('getLoginStatus', success.status);
+
+    		// Check if we have our user saved
+      } else {
+        // If (success.status === 'not_authorized') the user is logged in to Facebook,
+				// but has not authenticated your app
+        // Else the person is not logged into Facebook,
+				// so we're not sure if they are logged into this app or not.
+
+				console.log('getLoginStatus', success.status);
+
+				$ionicLoading.show({
+          template: 'Logging in...'
+        });
+
+				// Ask the permissions you need. You can learn more about
+				// FB permissions here: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
+        facebookConnectPlugin.login(['email', 'public_profile'], fbLoginSuccess, fbLoginError);
+      }
+    });
+  }
     $scope.login = function() {
         if(localStorage.getItem('ID')) {
             localStorage.removeItem('accessToken');
@@ -245,6 +292,31 @@ angular.module('starter.controllers', [])
 })
 
 .controller('LogoutCtrl', function($scope, $stateParams, $state, $http, Account) {
+    $scope.showLogOutMenu = function() {
+      var hideSheet = $ionicActionSheet.show({
+        destructiveText: 'Logout',
+        titleText: 'Are you sure you want to logout? This app is awsome so I recommend you to stay.',
+        cancelText: 'Cancel',
+        cancel: function() {},
+        buttonClicked: function(index) {
+          return true;
+        },
+        destructiveButtonClicked: function(){
+          $ionicLoading.show({
+            template: 'Logging out...'
+          });
+
+          // Facebook logout
+          facebookConnectPlugin.logout(function(){
+            Account.logout();
+            $ionicLoading.hide();
+          },
+          function(fail){
+            $ionicLoading.hide();
+          });
+        }
+      });
+    };
     $scope.logout = function() {
         if(localStorage.getItem('ID')) {
             Account.logout();

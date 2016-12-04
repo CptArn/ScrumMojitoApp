@@ -12,7 +12,7 @@ angular.module('starter.controllers', [])
 .controller('DashboardCtrl', function($scope, $http) {
         console.log('user: ' + localStorage.getItem('ID'));
         // $scope.$on('$ionicView.beforeEnter', function() {
-            $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=testtoken&id=' + localStorage.getItem('ID')).success(function(data) {
+            $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
               $scope.users = data;
 
             }).error(function(error) {
@@ -23,7 +23,6 @@ angular.module('starter.controllers', [])
 
         $scope.judge = function(favorite_id, like) {
             var url = 'http://studyfindr.herokuapp.com/user/' + favorite_id + '/like';
-            var $accessToken = 'testtoken';
             var $id = localStorage.getItem('ID');
             $http({
                 method: 'POST',
@@ -35,7 +34,7 @@ angular.module('starter.controllers', [])
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                     return str.join("&");
                 },
-                data: {id_to_like: favorite_id, accessToken: $accessToken, id: $id, like: like}
+                data: {id_to_like: favorite_id, accessToken: $localStorage.getItem('accessToken'), id: $id, like: like}
             }).success(function () {
                 console.log('You said ' + like + ' to liking user: ' + favorite_id);
             }).error(function(error) {
@@ -100,18 +99,18 @@ angular.module('starter.controllers', [])
     $scope.setProfile = function(data) {
          // User info
         $scope.user = {
-            age: data.age,
             id: data.id,
+            email: data.email,
             firstname: data.firstname,
             lastname: data.lastname,
-            email: data.email,
+            location: data.location,
+            age: data.age,
             prefMale: data.prefMale,
             prefFemale: data.prefFemale,
             prefTrans: data.prefTrans,
             prefAge: data.prefAge,
             prefDistance: data.prefDistance,
             prefLocation: data.prefLocation,
-            location: data.location
         };
 
         // Age slider options
@@ -137,12 +136,13 @@ angular.module('starter.controllers', [])
         $scope.user.prefAge = parseInt($scope.user.prefAge);
         $scope.user.prefDistance = parseInt($scope.user.prefDistance);
         console.log($scope.user);
-        // $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', $scope.user).success(function(data) {
-        //  console.log('data: ');
-        //     console.log(data);
-        // }).error(function(error) {
-        //   console.log(error);
-        // });
+        $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update?accessToken=' + localStorage.getItem('accessToken'), $scope.user)
+        .success(function(data) {
+         console.log('data: ');
+            console.log(data);
+        }).error(function(error) {
+          console.log(error);
+        });
 
     };
 
@@ -153,7 +153,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MatchesCtrl', function($scope, $stateParams, $http) {
-    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=testtoken&id=' + localStorage.getItem('ID')).success(function(data) {
+    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
         console.log(data);
         $scope.matches = data;
     }).error(function() {

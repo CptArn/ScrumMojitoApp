@@ -2,14 +2,14 @@ angular.module('starter.services', [])
 
 .service('Profile', function($http) {
     this.getCurrentProfile = function() {
-        return $http.get('http://studyfindr.herokuapp.com/user/getmyinfo?accessToken=testtoken&id=' + localStorage.getItem('ID'));
+        return $http.get('http://studyfindr.herokuapp.com/user/getmyinfo?accessToken=' + localStorage.getItem('accessToken') +'&id=' + localStorage.getItem('ID'));
     };
     this.setProfile = function(id, data) {
         // Y U DO DIS? ($scope.user.id???)
         return $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', data);
     };
     this.getUserInfo = function(id) {
-        return $http.get('http://studyfindr.herokuapp.com/user/' + id + '/info?accessToken=testtoken&id=' + localStorage.getItem('ID'));
+        return $http.get('http://studyfindr.herokuapp.com/user/' + id + '/info?accessToken='+ localStorage.getItem('accessToken') +'&id=' + localStorage.getItem('ID'));
     };
 })
 

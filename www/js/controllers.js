@@ -96,11 +96,10 @@ angular.module('starter.controllers', [])
             prefMale: data.prefMale,
             prefFemale: data.prefFemale,
             prefTrans: data.prefTrans,
-            prefAge: data.prefAge,
             prefDistance: data.prefDistance,
             prefLocation: data.prefLocation,
-            prefAgeMin: 20,
-            prefAgeMax: 50
+            prefAgeMin: data.prefAgeMin,
+            prefAgeMax: data.prefAgeMax
         };
 
 
@@ -114,7 +113,8 @@ angular.module('starter.controllers', [])
     $scope.saveProfile = function() {
         // Post to API
         $scope.user.prefLocation = 2;
-        $scope.user.prefAge = parseInt($scope.user.prefAge);
+        $scope.user.prefAgeMin = $scope.user.prefAgeMin;
+        $scope.user.prefAgeMax = $scope.user.prefAgeMax;
         $scope.user.prefDistance = parseInt($scope.user.prefDistance);
         console.log($scope.user);
         $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update?accessToken=' + localStorage.getItem('accessToken'), $scope.user)

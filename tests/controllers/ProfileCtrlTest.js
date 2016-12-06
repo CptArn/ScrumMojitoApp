@@ -17,7 +17,8 @@ describe('ProfileCtrl', function() {
 							id: 10210995798960326,
 							lastname: "Vlaeminck",
 							location: 1,
-							prefAge: 18,
+							prefAgeMin: 20,
+							prefAgeMax: 50,
 							prefDistance: 10,
 							prefFemale: true,
 							prefLocation: 1,
@@ -31,7 +32,8 @@ describe('ProfileCtrl', function() {
 							id: 10210995798960326,
 							lastname: "Vlaeminck",
 							location: 1,
-							prefAge: 18,
+							prefAgeMin: 20,
+							prefAgeMax: 50,
 							prefDistance: 10,
 							prefFemale: true,
 							prefLocation: 1,
@@ -52,5 +54,5 @@ describe('ProfileCtrl', function() {
 		expect($scope.locationId).toEqual(3);
 	});
 
-	
+
 });

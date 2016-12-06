@@ -13,7 +13,7 @@ angular.module('starter.services', [])
     };
 })
 
-.service('Account', function($http, $state, $stateParams){
+.service('Account', function($http, $state, $stateParams, $ionicLoading){
     this.login = function(response) {
       console.log(response);
       var url = 'http://studyfindr.herokuapp.com/facebook/login';
@@ -34,6 +34,8 @@ angular.module('starter.services', [])
         console.log(localStorage);
         localStorage.setItem('ID', response.authResponse.userID);
         localStorage.setItem('accessToken', response.authResponse.accessToken);
+        $ionicLoading.hide();
+        $state.go('app.dashboard');
       }).error(function(error) {
         console.log(error);
       });

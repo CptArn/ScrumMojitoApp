@@ -220,8 +220,6 @@ angular.module('starter.controllers', [])
       return;
     }
     Account.login(response);
-    $ionicLoading.hide();
-    $state.go('app.dashboard');
   };
   // This is the fail callback from the login method
   var fbLoginError = function(error){
@@ -235,8 +233,9 @@ angular.module('starter.controllers', [])
     }
     facebookConnectPlugin.getLoginStatus(function(success){
       if(success.status === 'connected'){
-        Account.login(success);
-        $state.go('app.dashboard');
+        Account.login(success).success(function() {
+          $state.go('app.dashboard');
+        });
         // The user is logged in and has authenticated your app, and response.authResponse supplies
         // the user's ID, a valid access token, a signed request, and the time the access token
         // and signed request each expire
@@ -260,35 +259,7 @@ angular.module('starter.controllers', [])
         facebookConnectPlugin.login(['email', 'public_profile'], fbLoginSuccess, fbLoginError);
       }
     });
-  }
-    $scope.login = function() {
-        if(localStorage.getItem('ID')) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('ID');
-        }
-        else {
-            FB.getLoginStatus(function(response) {
-              console.log(response);
-              // If login status = connected, user is already logged in, get user information
-              if (response.status === 'connected') {
-                    console.log(response);
-                    Account.login(response);
-                    $state.go('app.dashboard');
-              }
-              else { // Log in user
-                FB.login();
-                FB.getLoginStatus(function(response) {
-                  console.log(response);
-                  // If login status = connected, user is already logged in, get user information
-                  if (response.status === 'connected') {
-                        Account.login(response);
-                        $state.go('app.profile');
-                    }
-                });
-              }
-            });
-        }
-    };
+  };
 })
 
 .controller('LogoutCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q, $ionicActionSheet) {

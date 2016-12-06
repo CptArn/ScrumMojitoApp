@@ -37,9 +37,12 @@
         <ion-item>
             <span class="preferences-title">Age between:</span>
             <div class="range">
-              <span class="preferences-title">16j </span>
-              <input type="range" ng-model="user.prefAge" min="{{ageSlider.min}}" max="{{ageSlider.max}}" name="age">
-             <span class="preferences-title">{{user.prefAge | num}}j</span>
+
+                <span class="preferences-title">{{user.prefAgeMin | num}}j </span>
+                <input class="dualrange" type="range" ng-model="user.prefAgeMin" min="18" max="{{user.prefAgeMax}}" name="age">
+                <input class="dualrange" type="range" ng-model="user.prefAgeMax" min="{{user.prefAgeMin}}" max="99" name="age">
+
+                <span class="preferences-title">{{user.prefAgeMax | num}}j</span>
               <!-- <rzslider
                   rz-slider-model="ageSlider.min"
                   rz-slider-high="ageSlider.max"
@@ -66,6 +69,7 @@
                 rz-slider-options="distanceSlider.options"></rzslider> -->
             </div>
         </ion-item>
+
         <button class="button button-full button-custom" ng-click="saveProfile()">Save my profile</button>
     </ion-list>
   </ion-content>

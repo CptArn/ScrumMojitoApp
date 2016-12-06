@@ -14,7 +14,8 @@ angular.module('starter.controllers', [])
         // $scope.$on('$ionicView.beforeEnter', function() {
             $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
               $scope.users = data;
-
+              console.log('data: ');
+              console.log(data);
             }).error(function(error) {
               $scope.users = "Sorry, something went wrong with our server";
               console.log(error);
@@ -64,28 +65,15 @@ angular.module('starter.controllers', [])
     $scope.distanceSlider = [];
     $scope.selectedLocation = [];
     $scope.id = localStorage.getItem('ID');
-    // // Age slider options
-    // $scope.ageSlider = {
-    //     min: 18,
-    //     max: 75,
-    //     options: {
-    //         floor: 18,
-    //         ceil: 100
-    //     }
-    // };
-    // // Distance slider options
-    // $scope.distanceSlider = {
-    //     value: 10,
-    //     options: {
-    //         floor: 0,
-    //         ceil: 40
-    //     }
-    // };
+
+    $scope.user.prefAgeMin = 20;
+    $scope.user.prefAgeMax = 25;
 
     // Dropdown location options
     $scope.locations = [{id: 1, value: "Gent"}, {id: 2, value: "Kortrijk"}, {id: 3, value: "Leuven"}, {id: 4, value: "Brussel"}];
 
     $scope.$on('$ionicView.beforeEnter', function() {
+
         // Get profile information from user ID
         Profile.getCurrentProfile().success(function(data) { //localStorage.getItem('user')
           console.log(data);
@@ -111,20 +99,13 @@ angular.module('starter.controllers', [])
             prefAge: data.prefAge,
             prefDistance: data.prefDistance,
             prefLocation: data.prefLocation,
+            prefAgeMin: 20,
+            prefAgeMax: 50
         };
 
-        // Age slider options
-           $scope.ageSlider = {
-               value: data.prefAge, // Age offset
-               min: 16,
-               max: 99
-           };
-           // Distance slider options
-           $scope.distanceSlider = {
-               value: data.prefDistance,
-               min: 0,
-               max: 40
-           };
+
+
+
         // Location preference
         $scope.selectedLocation = data.prefLocation;
     };

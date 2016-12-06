@@ -74,8 +74,8 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.beforeEnter', function() {
 
-        // Get profile information from user ID
-        Profile.getCurrentProfile().success(function(data) { //localStorage.getItem('user')
+    // Get profile information from user ID
+    Profile.getCurrentProfile().success(function(data) { //localStorage.getItem('user')
           console.log(data);
           $scope.setProfile(data);
         }).error(function(error) {

@@ -19,7 +19,7 @@ angular.module('starter.services', [])
       var url = 'http://studyfindr.herokuapp.com/facebook/login';
       var $uid = response.authResponse.userID;
       var $accessToken = response.authResponse.accessToken;
-      return $http({
+      $http({
           method: 'POST',
           url: url,
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},

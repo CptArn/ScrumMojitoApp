@@ -5,13 +5,38 @@ angular.module('starter.controllers', [])
       return parseInt(input, 10);
     };
 })
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicActionSheet, $ionicLoading, Account) {
     $scope.loggedIn = localStorage.getItem('ID') !== '';
+    $scope.showLogOutMenu = function() {
+      var hideSheet = $ionicActionSheet.show({
+        destructiveText: 'Logout',
+        titleText: 'Are you sure you want to logout? This app is awesome so I recommend you to stay.',
+        cancelText: 'Cancel',
+        cancel: function() {},
+        buttonClicked: function(index) {
+          return true;
+        },
+        destructiveButtonClicked: function(){
+          $ionicLoading.show({
+            template: 'Logging out...'
+          });
+
+          // Facebook logout
+          facebookConnectPlugin.logout(function(){
+            Account.logout();
+            $ionicLoading.hide();
+          },
+          function(fail){
+            $ionicLoading.hide();
+          });
+        }
+      });
+    };
 })
 
 .controller('DashboardCtrl', function($scope, $http) {
         console.log('user: ' + localStorage.getItem('ID'));
-        // $scope.$on('$ionicView.beforeEnter', function() {
+        $scope.$on('$ionicView.enter', function() {
             $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
               $scope.users = data;
               console.log('data: ');
@@ -20,7 +45,7 @@ angular.module('starter.controllers', [])
               $scope.users = "Sorry, something went wrong with our server";
               console.log(error);
             });
-        // });
+        });
 
         $scope.judge = function(favorite_id, like) {
             var url = 'http://studyfindr.herokuapp.com/user/' + favorite_id + '/like';
@@ -117,7 +142,13 @@ angular.module('starter.controllers', [])
         $scope.user.prefAgeMax = $scope.user.prefAgeMax;
         $scope.user.prefDistance = parseInt($scope.user.prefDistance);
         console.log($scope.user);
-        $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update?accessToken=' + localStorage.getItem('accessToken'), $scope.user)
+        //$http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update?accessToken=' + localStorage.getItem('accessToken'), $scope.user)
+        $http({
+            method: 'POST',
+            url: 'http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update?accessToken=' + localStorage.getItem('accessToken'),
+            headers: {'Content-Type': 'application/json'},
+            data: $scope.user
+        })
         .success(function(data) {
          console.log('data: ');
             console.log(data);
@@ -244,29 +275,5 @@ angular.module('starter.controllers', [])
 })
 
 .controller('LogoutCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q, $ionicActionSheet) {
-    $scope.showLogOutMenu = function() {
-      var hideSheet = $ionicActionSheet.show({
-        destructiveText: 'Logout',
-        titleText: 'Are you sure you want to logout? This app is awesome so I recommend you to stay.',
-        cancelText: 'Cancel',
-        cancel: function() {},
-        buttonClicked: function(index) {
-          return true;
-        },
-        destructiveButtonClicked: function(){
-          $ionicLoading.show({
-            template: 'Logging out...'
-          });
 
-          // Facebook logout
-          facebookConnectPlugin.logout(function(){
-            Account.logout();
-            $ionicLoading.hide();
-          },
-          function(fail){
-            $ionicLoading.hide();
-          });
-        }
-      });
-    };
 });

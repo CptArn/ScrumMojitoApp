@@ -5,6 +5,11 @@ angular.module('starter.controllers', [])
       return parseInt(input, 10);
     };
 })
+.filter('toDate', function() {
+    return function(input) {
+      return new Date(input).toTimeString().split(' ')[0];
+    };
+})
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicActionSheet, $ionicLoading, Account) {
     $scope.loggedIn = localStorage.getItem('ID') !== '';
     $scope.showLogOutMenu = function() {
@@ -165,7 +170,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MatchesCtrl', function($scope, $stateParams, $http) {
-    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
+    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=testtoken&id=10210995798960326').success(function(data) {
+        console.log('matches: ');
         console.log(data);
         $scope.matches = data;
     }).error(function() {
@@ -174,8 +180,20 @@ angular.module('starter.controllers', [])
 
 })
 .controller('ChatCtrl', function($scope, $stateParams, $http, $ionicScrollDelegate, Profile) {
-    var match_id = $stateParams.id;
-    $scope.hideTime = true;
+    // var match_id = $stateParams.id;
+    var match_id = 2;
+    // $scope.myId = localStorage.getItem('ID');
+    $scope.myId = 1;
+
+    $scope.data = {};
+    $scope.messages = [];
+
+
+
+    var updateFrequency = 2000;
+    var updater;
+
+
     $scope.$on('$ionicView.beforeEnter', function() {
         Profile.getUserInfo(match_id).success(function(data) {
             $scope.match = data;
@@ -183,46 +201,94 @@ angular.module('starter.controllers', [])
         }).error(function(error) {
             console.log(error);
         });
-    });
 
+
+        $scope.getMessages();
+        // updater = setInterval(function() {$scope.getMessages();}, updateFrequency);
+    });
+    // Stop messages from refreshing
+    $scope.$on('$ionicView.leave', function() {
+        clearInterval(updater);
+    });
     var alternate;
     $scope.sendMessage = function() {
-       alternate = !alternate;
+        alternate = !alternate;
 
-       var d = new Date();
-       d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+        var d = new Date();
+        d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
 
-       $scope.messages.push({
-         userId: alternate ? localStorage.getItem('ID') : match_id,
-         text: $scope.data.message,
-         time: d
-       });
+        $scope.messages.unshift({
+            message: $scope.data.message,
+            sender_Id: $scope.myId,
+            receiver_Id: match_id,
+            date: Date.now()
+        });
 
-    //    delete $scope.data.message;
+        // 10208094342336332
+        $http.post('https://studyfindr.herokuapp.com/messages/postmessage', {id: $scope.myId, accesstoken: "testtoken", matchid: match_id, message: $scope.data.message}).success(function(data) {
+            console.log(data);
+        }).error(function(error) {
+            console.log(error);
+        });
+
+
+    //    $scope.messages.push({
+    //      userId: alternate ? localStorage.getItem('ID') : match_id,
+    //      text: $scope.data.message,
+    //      time: d
+    //    });
+
+       delete $scope.data.message;
        $ionicScrollDelegate.scrollBottom(true);
      };
 
 
-    //  $scope.inputUp = function() {
-    //    if (isIOS) $scope.data.keyboardHeight = 216;
-    //    $timeout(function() {
-    //      $ionicScrollDelegate.scrollBottom(true);
-    //    }, 300);
-    //  };
+     $scope.inputUp = function() {
+       if (isIOS) $scope.data.keyboardHeight = 216;
+       $timeout(function() {
+         $ionicScrollDelegate.scrollBottom(true);
+       }, 300);
+     };
 
-    //  $scope.inputDown = function() {
-    //    if (isIOS) $scope.data.keyboardHeight = 0;
-    //    $ionicScrollDelegate.resize();
-    //  };
-
-     $scope.closeKeyboard = function() {
-       // cordova.plugins.Keyboard.close();
+     $scope.inputDown = function() {
+       if (isIOS) $scope.data.keyboardHeight = 0;
+       $ionicScrollDelegate.resize();
      };
 
 
-     $scope.data = {};
-     $scope.myId = localStorage.getItem('ID');
-     $scope.messages = [];
+
+    $scope.closeKeyboard = function() {
+    // cordova.plugins.Keyboard.close();
+    };
+
+
+    // Get conversation between two users
+    $scope.getMessages = function() {
+        $http.get('https://studyfindr.herokuapp.com/messages/getconversation?id=1&accessToken=testtoken&matchid=2').success(function(data) {
+            console.log('convo: ');
+            console.log(data);
+            $ionicScrollDelegate.scrollBottom(true);
+            $scope.messages = data;
+
+        }).error(function() {
+
+        });
+    };
+
+    $scope.hideTime = true;
+    $scope.toggleTime = function(state) {
+        if(state === true) $scope.hideTime = true;
+        else $scope.hideTime = false;
+
+        console.log($scope.hideTime);
+    };
+
+    $scope.checkDate = function(date) {
+        if(new Date(date).toDateString() == new Date(Date.now()).toDateString()) {
+            console.log('today');
+            return true;
+        }
+    };
 })
 
 .controller('LoginCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q) {

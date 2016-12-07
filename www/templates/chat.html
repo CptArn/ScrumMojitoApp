@@ -1,11 +1,12 @@
 <ion-view>
     <ion-nav-title>{{match.firstname}} {{match.lastname}}</ion-nav-title>
-    <ion-content on-swipe-left="hideTime = false" on-swipe-right="hideTime = true">
-        <div ng-repeat="message in messages" ng-class="{other: message.userId != myId}" class="messages">
+    <ion-content on-swipe-left="toggleTime(true)" on-swipe-right="toggleTime(false)">
+        <div ng-repeat="message in messages | orderBy:'+':true" ng-class="{other: message.receiver_Id != myId}" class="messages">
+            <div ng-if="checkDate(message.date)"></div>
             <div class="message">
-                <span>{{ message.text }}</span>
+                <span>{{ message.message }} {{ message.id }}</span>
             </div>
-            <!-- <div class="time" ng-class="{'slide-right': hideTime, '': !hideTime}">{{message.time}}</div> -->
+            <div class="time" ng-show="hideTime">{{ message.date | toDate }}</div>
         </div>
     </ion-content>
     <ion-footer-bar keyboard-attach class="bar-stable item-input-inset">

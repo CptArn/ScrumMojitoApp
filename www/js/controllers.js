@@ -1,3 +1,4 @@
+var prevDate;
 angular.module('starter.controllers', [])
 // String to int
 .filter('num', function() {
@@ -7,7 +8,7 @@ angular.module('starter.controllers', [])
 })
 .filter('toDate', function() {
     return function(input) {
-      return new Date(input).toTimeString().split(' ')[0];
+      return new Date(input).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     };
 })
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicActionSheet, $ionicLoading, Account) {
@@ -181,9 +182,9 @@ angular.module('starter.controllers', [])
 })
 .controller('ChatCtrl', function($scope, $stateParams, $http, $ionicScrollDelegate, Profile) {
     // var match_id = $stateParams.id;
-    var match_id = 2;
+    var match_id = 1; //10210995798960326
     // $scope.myId = localStorage.getItem('ID');
-    $scope.myId = 1;
+    $scope.myId = 2; //10208094342336332
 
     $scope.data = {};
     $scope.messages = [];
@@ -214,9 +215,6 @@ angular.module('starter.controllers', [])
     $scope.sendMessage = function() {
         alternate = !alternate;
 
-        var d = new Date();
-        d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
-
         $scope.messages.unshift({
             message: $scope.data.message,
             sender_Id: $scope.myId,
@@ -224,19 +222,11 @@ angular.module('starter.controllers', [])
             date: Date.now()
         });
 
-        // 10208094342336332
-        $http.post('https://studyfindr.herokuapp.com/messages/postmessage', {id: $scope.myId, accesstoken: "testtoken", matchid: match_id, message: $scope.data.message}).success(function(data) {
+        $http.post('https://studyfindr.herokuapp.com/messages/postmessage?id=10208094342336332&accessToken=testtoken&matchid=10210995798960326', $scope.data.message).success(function(data) {
             console.log(data);
         }).error(function(error) {
             console.log(error);
         });
-
-
-    //    $scope.messages.push({
-    //      userId: alternate ? localStorage.getItem('ID') : match_id,
-    //      text: $scope.data.message,
-    //      time: d
-    //    });
 
        delete $scope.data.message;
        $ionicScrollDelegate.scrollBottom(true);
@@ -264,10 +254,10 @@ angular.module('starter.controllers', [])
 
     // Get conversation between two users
     $scope.getMessages = function() {
-        $http.get('https://studyfindr.herokuapp.com/messages/getconversation?id=1&accessToken=testtoken&matchid=2').success(function(data) {
+        $http.get('https://studyfindr.herokuapp.com/messages/getconversation?id=' + $scope.myId + '&accessToken=testtoken&matchid=' + match_id).success(function(data) {
             console.log('convo: ');
             console.log(data);
-            $ionicScrollDelegate.scrollBottom(true);
+            // $ionicScrollDelegate.scrollBottom(true);
             $scope.messages = data;
 
         }).error(function() {
@@ -275,18 +265,24 @@ angular.module('starter.controllers', [])
         });
     };
 
-    $scope.hideTime = true;
+    $scope.showTime = false;
     $scope.toggleTime = function(state) {
-        if(state === true) $scope.hideTime = true;
-        else $scope.hideTime = false;
-
-        console.log($scope.hideTime);
+        if(state === true) $scope.showTime = true;
+        else $scope.showTime = false;
     };
 
     $scope.checkDate = function(date) {
-        if(new Date(date).toDateString() == new Date(Date.now()).toDateString()) {
-            console.log('today');
+        if (new Date(date).toDateString() < prevDate) {
+            prevDate = new Date(date).toDateString();
+            $scope.date = new Date(date).toDateString();
             return true;
+        } else {
+            if (new Date(date).toDateString() == prevDate) {
+                return false;
+            } else {
+                prevDate = new Date(date).toDateString();
+                return true;
+            }
         }
     };
 })

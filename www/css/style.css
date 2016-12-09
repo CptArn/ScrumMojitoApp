@@ -184,6 +184,10 @@ input[type=range]::-webkit-slider-runnable-track {
     background-color: red;
     color: white;
 }
+.button-red:hover {
+    background-color: rgb(215, 37, 37);
+    color: white;
+}
 
 /* Messages */
 /*.scroll {
@@ -220,7 +224,7 @@ input[type=range]::-webkit-slider-runnable-track {
   -webkit-transform: translate3d(0, 0, 0) !important;
   -moz-transform: translate3d(0, 0, 0) !important;
   transform: translate3d(0, 0, 0) !important;
-
+    margin-bottom: -30px;
 
 }
 
@@ -264,4 +268,14 @@ input[type=range]::-webkit-slider-runnable-track {
     -webkit-transform: translate3d(120px, 0, 0) !important;
     -moz-transform: translate3d(120px, 0, 0) !important;
     transform: translate3d(120px, 0, 0) !important;
+}
+.flip-range {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.popup-buttons .button-positive {
+    background-color: #01C0B1;
 }

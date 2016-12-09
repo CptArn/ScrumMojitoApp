@@ -170,8 +170,8 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('MatchesCtrl', function($scope, $stateParams, $http) {
-    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=testtoken&id=10210995798960326').success(function(data) {
+.controller('MatchesCtrl', function($scope, $stateParams, $http, $ionicPopup) {
+    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken')+ '&id=10208094342336332').success(function(data) { //+ localStorage.getItem('ID')
         console.log('matches: ');
         console.log(data);
         $scope.matches = data;
@@ -179,12 +179,46 @@ angular.module('starter.controllers', [])
 
     });
 
+    $scope.delete = function(match) {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Delete ' + match.firstname,
+            template: "Don't cry when you don't find love",
+            okText: 'Remove',
+            cancelText: 'Keep'
+        });
+
+        confirmPopup.then(function(res) {
+            if(res) {
+                $scope.matches.splice($scope.matches.indexOf(match), 1);
+                // $http({
+                //     method: 'POST',
+                //     url: url,
+                //     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                //     transformRequest: function(obj) {
+                //         var str = [];
+                //         for(var p in obj)
+                //         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                //         return str.join("&");
+                //     },
+                //     data: {id_to_like: match.id, accessToken: $localStorage.getItem('accessToken'), id: $id, like: false}
+                // }).success(function () {
+                //
+                //     console.log('You removed ' + match.id + ' from your matches');
+                // }).error(function(error) {
+                //   console.log(error);
+                // });
+            } else {
+                console.log('Keep');
+            }
+        });
+    };
+
 })
 .controller('ChatCtrl', function($scope, $stateParams, $http, $ionicScrollDelegate, Profile) {
-    // var match_id = $stateParams.id;
-    var match_id = 1; //10210995798960326
-    // $scope.myId = localStorage.getItem('ID');
-    $scope.myId = 2; //10208094342336332
+    var match_id = $stateParams.id;
+    // var match_id = 1; //10210995798960326
+    $scope.myId = localStorage.getItem('ID');
+    // $scope.myId = 2; //10208094342336332
 
     $scope.data = {};
     $scope.messages = [];
@@ -222,7 +256,7 @@ angular.module('starter.controllers', [])
             date: Date.now()
         });
 
-        $http.post('https://studyfindr.herokuapp.com/messages/postmessage?id=10208094342336332&accessToken=testtoken&matchid=10210995798960326', $scope.data.message).success(function(data) {
+        $http.post('https://studyfindr.herokuapp.com/messages/postmessage?id=' + $scope.myId + '&accessToken=' + localStorage.getItem('accessToken')+ '&matchid=' + match_id, $scope.data.message).success(function(data) {
             console.log(data);
         }).error(function(error) {
             console.log(error);
@@ -254,12 +288,11 @@ angular.module('starter.controllers', [])
 
     // Get conversation between two users
     $scope.getMessages = function() {
-        $http.get('https://studyfindr.herokuapp.com/messages/getconversation?id=' + $scope.myId + '&accessToken=testtoken&matchid=' + match_id).success(function(data) {
+        $http.get('https://studyfindr.herokuapp.com/messages/getconversation?id=' + $scope.myId + '&accessToken=' + localStorage.getItem('accessToken') + '&matchid=' + match_id).success(function(data) {
             console.log('convo: ');
             console.log(data);
             // $ionicScrollDelegate.scrollBottom(true);
             $scope.messages = data;
-
         }).error(function() {
 
         });

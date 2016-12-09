@@ -40,10 +40,11 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('DashboardCtrl', function($scope, $http, $ionicSideMenuDelegate) {
+.controller('DashboardCtrl', function($scope, $http, $ionicSideMenuDelegate, $ionicScrollDelegate) {
     $ionicSideMenuDelegate.canDragContent(false);
         console.log('user: ' + localStorage.getItem('ID'));
         $scope.$on('$ionicView.enter', function() {
+           $ionicScrollDelegate.scrollTop(true);
             $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
               $scope.users = data;
               console.log('data: ');

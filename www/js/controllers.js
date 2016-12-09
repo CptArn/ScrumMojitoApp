@@ -1,4 +1,3 @@
-var prevDate;
 angular.module('starter.controllers', [])
 // String to int
 .filter('num', function() {
@@ -217,7 +216,8 @@ angular.module('starter.controllers', [])
 
 })
 .controller('ChatCtrl', function($scope, $stateParams, $http, $ionicScrollDelegate, Profile) {
-    var match_id = $stateParams.id;
+	var prevDate;
+	var match_id = $stateParams.id;
     // var match_id = 1; //10210995798960326
     $scope.myId = localStorage.getItem('ID');
     // $scope.myId = 2; //10208094342336332
@@ -307,15 +307,16 @@ angular.module('starter.controllers', [])
     };
 
     $scope.checkDate = function(date) {
-        if (new Date(date).toDateString() < prevDate) {
-            prevDate = new Date(date).toDateString();
-            $scope.date = new Date(date).toDateString();
+		var currentDate = new Date(date).toDateString();
+        if (currentDate < prevDate) {
+            prevDate = currentDate
+            $scope.date = currentDate
             return true;
         } else {
-            if (new Date(date).toDateString() == prevDate) {
+            if (currentDate == prevDate) {
                 return false;
             } else {
-                prevDate = new Date(date).toDateString();
+                prevDate = currentDate
                 return true;
             }
         }

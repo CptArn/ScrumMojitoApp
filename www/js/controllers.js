@@ -40,7 +40,8 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('DashboardCtrl', function($scope, $http) {
+.controller('DashboardCtrl', function($scope, $http, $ionicSideMenuDelegate) {
+    $ionicSideMenuDelegate.canDragContent(false);
         console.log('user: ' + localStorage.getItem('ID'));
         $scope.$on('$ionicView.enter', function() {
             $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
@@ -200,7 +201,7 @@ angular.module('starter.controllers', [])
                         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                         return str.join("&");
                     },
-                    data: {id_to_like: match.id, accessToken: $localStorage.getItem('accessToken'), id: $id, like: false}
+                    data: {id_to_like: match.id, accessToken: localStorage.getItem('accessToken'), id: $id, like: false}
                 }).success(function () {
 
                     console.log('You removed ' + match.id + ' from your matches');

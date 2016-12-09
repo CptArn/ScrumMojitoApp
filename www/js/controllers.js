@@ -171,7 +171,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MatchesCtrl', function($scope, $stateParams, $http, $ionicPopup) {
-    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken')+ '&id=10208094342336332').success(function(data) { //+ localStorage.getItem('ID')
+    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) { //+ localStorage.getItem('ID')
         console.log('matches: ');
         console.log(data);
         $scope.matches = data;
@@ -190,23 +190,23 @@ angular.module('starter.controllers', [])
         confirmPopup.then(function(res) {
             if(res) {
                 $scope.matches.splice($scope.matches.indexOf(match), 1);
-                // $http({
-                //     method: 'POST',
-                //     url: url,
-                //     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                //     transformRequest: function(obj) {
-                //         var str = [];
-                //         for(var p in obj)
-                //         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                //         return str.join("&");
-                //     },
-                //     data: {id_to_like: match.id, accessToken: $localStorage.getItem('accessToken'), id: $id, like: false}
-                // }).success(function () {
-                //
-                //     console.log('You removed ' + match.id + ' from your matches');
-                // }).error(function(error) {
-                //   console.log(error);
-                // });
+                $http({
+                    method: 'POST',
+                    url: url,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: {id_to_like: match.id, accessToken: $localStorage.getItem('accessToken'), id: $id, like: false}
+                }).success(function () {
+
+                    console.log('You removed ' + match.id + ' from your matches');
+                }).error(function(error) {
+                  console.log(error);
+                });
             } else {
                 console.log('Keep');
             }

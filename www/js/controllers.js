@@ -66,7 +66,7 @@ angular.module('starter.controllers', [])
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                     return str.join("&");
                 },
-                data: {id_to_like: favorite_id, accessToken: $localStorage.getItem('accessToken'), id: $id, like: like}
+                data: {id_to_like: favorite_id, accessToken: localStorage.getItem('accessToken'), id: $id, like: like}
             }).success(function () {
                 console.log('You said ' + like + ' to liking user: ' + favorite_id);
             }).error(function(error) {

@@ -137,7 +137,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     if(localStorage.getItem('ID')) {
         // console.log('user logged in');
         $urlRouterProvider.otherwise('app/matches');
-    }else {
+    } else {
         // console.log('not logged in');
         $urlRouterProvider.otherwise('/login');
     }

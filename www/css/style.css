@@ -290,3 +290,9 @@ input[type=range]::-webkit-slider-runnable-track {
 	padding:0 10px;
 	background-color: white;
 }
+.spinner svg {
+  width: 28px;
+  height: 28px;
+  stroke: #01C0B1;
+  fill: #444;
+}

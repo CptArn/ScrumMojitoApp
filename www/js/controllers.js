@@ -40,14 +40,46 @@ angular.module('starter.controllers', [])
 })
 
 .controller('DashboardCtrl', function($scope, $http, $ionicSideMenuDelegate, $ionicScrollDelegate) {
+    $scope.users = [{
+            id: 1234,
+            email: "ik@hotmail.com",
+            firstname: "jef",
+            lastname: "jef",
+            location: 1,
+            age: 21,
+            prefMale: false,
+            prefFemale: true,
+            prefTrans: false,
+            prefDistance: 3,
+            prefLocation: 1,
+            prefAgeMin: 23,
+            prefAgeMax: 24
+        }, {
+                id: 4,
+                email: "ik@hotmail.com",
+                firstname: "jef",
+                lastname: "jef",
+                location: 1,
+                age: 21,
+                prefMale: false,
+                prefFemale: true,
+                prefTrans: false,
+                prefDistance: 3,
+                prefLocation: 1,
+                prefAgeMin: 23,
+                prefAgeMax: 24
+            }];
+
+    $scope.model = {};
+
     $ionicSideMenuDelegate.canDragContent(false);
         console.log('user: ' + localStorage.getItem('ID'));
         $scope.$on('$ionicView.enter', function() {
            $ionicScrollDelegate.scrollTop(true);
             $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
               $scope.users = data;
-              console.log('data: ');
-              console.log(data);
+            //   console.log('data: ');
+            //   console.log(data);
             }).error(function(error) {
               $scope.users = "Sorry, something went wrong with our server";
               console.log(error);
@@ -77,11 +109,12 @@ angular.module('starter.controllers', [])
 
         // Check slider value to delete or like user
         $scope.checkAction = function(value, user) {
-            console.log(user.id);
             if(value == 100) {
+                $scope.model.action = 0;
                 $scope.judge(user.id, true);
                 $scope.users.splice($scope.users.indexOf(user), 1);
             } else if(value == -100) {
+                $scope.model.action = 0;
                 $scope.judge(user.id, false);
                 $scope.users.splice($scope.users.indexOf(user), 1);
             }
@@ -172,14 +205,29 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MatchesCtrl', function($scope, $stateParams, $http, $ionicPopup) {
-    $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) { //+ localStorage.getItem('ID')
-        console.log('matches: ');
-        console.log(data);
-        $scope.matches = data;
-    }).error(function() {
+    // Pull page to refresh matches
+    $scope.refreshMatches = function() {
+        $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) { //+ localStorage.getItem('ID')
+            console.log('matches: ');
+            console.log(data);
+            $scope.matches = data;
+        }).error(function() {
 
+        });
+    };
+
+    // Load matches on view enter
+    $scope.$on('$ionicView.beforeEnter', function() {
+        $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) { //+ localStorage.getItem('ID')
+            console.log('matches: ');
+            console.log(data);
+            $scope.matches = data;
+        }).error(function() {
+
+        });
     });
 
+    // Delete match from matches
     $scope.delete = function(match) {
         var confirmPopup = $ionicPopup.confirm({
             title: 'Delete ' + match.firstname,

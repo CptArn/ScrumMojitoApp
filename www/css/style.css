@@ -224,7 +224,7 @@ input[type=range]::-webkit-slider-runnable-track {
   -webkit-transform: translate3d(0, 0, 0) !important;
   -moz-transform: translate3d(0, 0, 0) !important;
   transform: translate3d(0, 0, 0) !important;
-    margin-bottom: -30px;
+  margin-bottom: -30px;
 
 }
 

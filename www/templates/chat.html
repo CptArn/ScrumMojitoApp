@@ -4,7 +4,7 @@
         <div ng-repeat="message in messages | orderBy:'+':true" ng-class="{other: message.receiver_Id != myId}" class="messages">
             <div class="message">
                 <div ng-if="checkDate(message.date)" class="date-bar clearfix">
-                    <p>{{date}}</p>
+                    <p>{{message.date | date:'d MMM y'}}</p>
                 </div>
                 <span>{{ message.message }}</span>
             </div>

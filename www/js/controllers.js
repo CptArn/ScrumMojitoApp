@@ -213,6 +213,9 @@ angular.module('starter.controllers', [])
             $scope.matches = data;
         }).error(function() {
 
+        }).finally(function() {
+           // Stop the ion-refresher from spinning
+           $scope.$broadcast('scroll.refreshComplete');
         });
     };
 
@@ -357,21 +360,21 @@ angular.module('starter.controllers', [])
     $scope.checkDate = function(date) {
 		var currentDate = new Date(date).toDateString();
         if (currentDate < prevDate) {
-            prevDate = currentDate
-            $scope.date = currentDate
+            prevDate = currentDate;
+            $scope.date = currentDate;
             return true;
         } else {
             if (currentDate == prevDate) {
                 return false;
             } else {
-                prevDate = currentDate
+                prevDate = currentDate;
                 return true;
             }
         }
     };
 })
 
-.controller('LoginCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q) {
+.controller('LoginCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q, facebookConnectPlugin) {
   var fbLoginSuccess = function(response) {
     if (!response.authResponse){
       fbLoginError("Cannot find the authResponse");
@@ -420,6 +423,6 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('LogoutCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q, $ionicActionSheet) {
+.controller('LogoutCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q, $ionicActionSheet, facebookConnectPlugin) {
 
 });

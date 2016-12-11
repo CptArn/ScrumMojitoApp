@@ -374,7 +374,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('LoginCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q, facebookConnectPlugin) {
+.controller('LoginCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q) {
   var fbLoginSuccess = function(response) {
     if (!response.authResponse){
       fbLoginError("Cannot find the authResponse");

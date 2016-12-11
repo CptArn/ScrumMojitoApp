@@ -109,14 +109,17 @@ angular.module('starter.controllers', [])
 
         // Check slider value to delete or like user
         $scope.checkAction = function(value, user) {
+            console.log(value);
+            console.log(user.id);
+            console.log($scope.users.indexOf(user));
             if(value == 100) {
                 $scope.judge(user.id, true);
                 $scope.users.splice($scope.users.indexOf(user), 1);
-                $scope.model.action = 0;
+                user.action = 0;
             } else if(value == -100) {
                 $scope.judge(user.id, false);
                 $scope.users.splice($scope.users.indexOf(user), 1);
-                $scope.model.action = 0;
+                user.action = 0;
             }
         };
 

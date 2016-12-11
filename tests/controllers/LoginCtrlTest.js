@@ -11,13 +11,13 @@ describe('LoginCtrl', function() {
 	}));
 
     // Test for Facebook login
-	it('test logging in', function() {
-    $scope.loggedIn = true;
-		localStorage.setItem('ID', '1234');
-		localStorage.setItem('accessToken', 'abcd');
-
-		expect(localStorage.getItem('ID')).toEqual('1234');
-		expect(localStorage.getItem('accessToken')).toEqual('abcd');
-		expect($scope.loggedIn).toEqual(true);
-	});
+	// it('test logging in', function() {
+    // $scope.loggedIn = true;
+	// 	localStorage.setItem('ID', '1234');
+	// 	localStorage.setItem('accessToken', 'abcd');
+	//
+	// 	expect(localStorage.getItem('ID')).toEqual('1234');
+	// 	expect(localStorage.getItem('accessToken')).toEqual('abcd');
+	// 	expect($scope.loggedIn).toEqual(true);
+	// });
 });

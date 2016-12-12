@@ -246,6 +246,8 @@ angular.module('starter.controllers', [])
 
         confirmPopup.then(function(res) {
             if(res) {
+                var url = 'http://studyfindr.herokuapp.com/user/' + match.id + '/like';
+                var $id = localStorage.getItem('ID');
                 $scope.matches.splice($scope.matches.indexOf(match), 1);
                 $http({
                     method: 'POST',
@@ -257,7 +259,7 @@ angular.module('starter.controllers', [])
                         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                         return str.join("&");
                     },
-                    data: {id_to_like: match.id, accessToken: localStorage.getItem('accessToken'), id: $id, like: false}
+                    data: {accessToken: localStorage.getItem('accessToken'), id: $id, like: false}
                 }).success(function () {
 
                     console.log('You removed ' + match.id + ' from your matches');

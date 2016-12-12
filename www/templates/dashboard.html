@@ -23,12 +23,10 @@
                 <img class="dash-img" ng-src="http://graph.facebook.com/{{user.id}}/picture?type=large" />
                 <h2>{{ user.firstname }} {{ user.lastname }} ({{ user.age }})</h2>
                 <p>{{ user.location }}</p>
-
             </div>
-
             <div class="range custom-range">
                 <i class="icon ion-ios-trash-outline dashboard-icon"></i>
-                <input type="range" ng-model="user.action" min="-100" max="100" name="like" ng-change="checkAction(user.action, user)">
+                <input type="range" ng-model="user.action" ng-disabled="disabled" min="-100" max="100" name="like" ng-change="checkAction(user.action, user)">
                 <i class="icon ion-ios-heart-outline dashboard-icon"></i>
                 <!-- <i class="dashboard-icon" ng-class="{'ion-ios-heart-outline': liked == 0, 'ion-ios-heart' : liked == 1}"></i> -->
             </div>

@@ -39,7 +39,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('DashboardCtrl', function($scope, $http, $ionicSideMenuDelegate, $ionicScrollDelegate) {
+.controller('DashboardCtrl', function($scope, $http, $ionicSideMenuDelegate, $ionicScrollDelegate, $timeout) {
     $scope.users = [{
             id: 1234,
             email: "ik@hotmail.com",
@@ -106,7 +106,7 @@ angular.module('starter.controllers', [])
               console.log(error);
             });
         };
-
+        $scope.disabled = false;
         // Check slider value to delete or like user
         $scope.checkAction = function(value, user) {
             console.log(value);
@@ -114,11 +114,16 @@ angular.module('starter.controllers', [])
             console.log($scope.users.indexOf(user));
             if(value == 100) {
                 $scope.judge(user.id, true);
+                $scope.disabled = true;
                 $scope.users.splice($scope.users.indexOf(user), 1);
+                $timeout(function() {$scope.disabled = false;}, 500);
+
                 user.action = 0;
             } else if(value == -100) {
                 $scope.judge(user.id, false);
+                $scope.disabled = true;
                 $scope.users.splice($scope.users.indexOf(user), 1);
+                $timeout(function() {$scope.disabled = false;}, 500);
                 user.action = 0;
             }
         };
@@ -169,9 +174,6 @@ angular.module('starter.controllers', [])
             prefAgeMin: data.prefAgeMin,
             prefAgeMax: data.prefAgeMax
         };
-
-
-
 
         // Location preference
         $scope.selectedLocation = data.prefLocation;
@@ -283,11 +285,8 @@ angular.module('starter.controllers', [])
     $scope.data = {};
     $scope.messages = [];
 
-
-
     var updateFrequency = 2000;
     var updater;
-
 
     $scope.$on('$ionicView.beforeEnter', function() {
         Profile.getUserInfo(match_id).success(function(data) {
@@ -299,7 +298,7 @@ angular.module('starter.controllers', [])
 
 
         $scope.getMessages();
-        // updater = setInterval(function() {$scope.getMessages();}, updateFrequency);
+        updater = setInterval(function() {$scope.getMessages();}, updateFrequency);
     });
     // Stop messages from refreshing
     $scope.$on('$ionicView.leave', function() {

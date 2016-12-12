@@ -5,20 +5,14 @@
       <button class="button button-clear" ng-click="closeLogin()">Close</button>
     </div>
   </ion-header-bar>
-  <ion-content scroll="false">
+  <ion-content scroll="false" id="login_screen">
     <form ng-submit="doLogin()">
       <div class="list">
-        <!-- <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="loginData.username">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="loginData.password">
-        </label> -->
+        <div id="logo"></div>
         <h2 id="login-slogan">Find students in your area and hook up with them!</h2>
-        <button id="facebook" class="button button-block button-positive" ng-click="facebookSignIn()"><i class="ion-social-facebook icon" style="float: left;"></i>Log in with Facebook</button>
-        <!-- <button class="button button-block button-assertive" ui-sref="app.profile">Or cri</button> -->
+        <div id="facebook_div">
+            <button id="facebook" class="button button-facebook" ng-click="facebookSignIn()"><i class="ion-social-facebook icon" style="float: left;"></i>Log in with Facebook</button>
+        </div>
 
       </div>
     </form>

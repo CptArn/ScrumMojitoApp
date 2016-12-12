@@ -13,7 +13,46 @@ angular.module('starter.services', [])
     };
 })
 
-.service('Account', function($http, $state, $stateParams, $ionicLoading){
+.service('Location', function($http) {
+  this.getLocation = function() {
+    // onSuccess Callback
+    // This method accepts a Position object, which contains the
+    // current GPS coordinates
+    //
+    var onSuccess = function(position) {
+      $locationdata = {
+        id: localStorage.getItem('ID'),
+        accessToken: localStorage.getItem('accessToken'),
+        lat: position.coords.latitude,
+        lon: position.coords.longitude
+      };
+        $http({
+            method: 'POST',
+            url: 'http://studyfindr.herokuapp.com/user/updatemylocation',
+            headers: {'Content-Type': 'application/json'},
+            data: $locationdata
+        })
+        .success(function(data) {
+         console.log('data: ');
+            console.log(data);
+        }).error(function(error) {
+          console.log(error);
+        });
+        console.log(position.coords);
+    };
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        console.log('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
+
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+  }
+})
+
+.service('Account', function($http, $state, $stateParams, $ionicLoading, Location){
     this.login = function(response) {
       console.log(response);
       var url = 'http://studyfindr.herokuapp.com/facebook/login';
@@ -34,6 +73,7 @@ angular.module('starter.services', [])
         console.log(localStorage);
         localStorage.setItem('ID', response.authResponse.userID);
         localStorage.setItem('accessToken', response.authResponse.accessToken);
+        Location.getLocation();
         $ionicLoading.hide();
         $state.go('app.dashboard');
       }).error(function(error) {
@@ -72,6 +112,7 @@ angular.module('starter.services', [])
           }
           else {
             localStorage.setItem('accessToken', token);
+            Location.getLocation();
           }
       }, function(err) {
           alert("Could not get access token: " + err);

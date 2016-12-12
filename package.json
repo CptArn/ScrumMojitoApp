@@ -33,7 +33,8 @@
     "cordova-plugin-device",
     "cordova-plugin-splashscreen",
     "ionic-plugin-keyboard",
-    "cordova-plugin-whitelist@~1.3.0"
+    "cordova-plugin-whitelist@~1.3.0",
+    "cordova-plugin-geolocation"
   ],
   "cordovaPlatforms": []
 }

@@ -126,7 +126,7 @@ angular.module('starter.controllers', [])
 })
 
 // Controller for user profile page
-.controller('ProfileCtrl', function($scope, $http, Profile) {
+.controller('ProfileCtrl', function($scope, $http, Profile, Location) {
     $scope.user = [];
     $scope.gender = [];
     $scope.ageSlider = [];
@@ -184,11 +184,13 @@ angular.module('starter.controllers', [])
         $scope.user.prefAgeMin = $scope.user.prefAgeMin;
         $scope.user.prefAgeMax = $scope.user.prefAgeMax;
         $scope.user.prefDistance = parseInt($scope.user.prefDistance);
+        Location.getLocation();
         console.log($scope.user);
+
         //$http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update?accessToken=' + localStorage.getItem('accessToken'), $scope.user)
         $http({
             method: 'POST',
-            url: 'http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update?accessToken=' + localStorage.getItem('accessToken'),
+            url: 'http://studyfindr.herokuapp.com/user/' + localStorage.getItem('ID') + '/update?accessToken=' + localStorage.getItem('accessToken'),
             headers: {'Content-Type': 'application/json'},
             data: $scope.user
         })

@@ -19,14 +19,6 @@
             <span class="input-label" ng-class="passwordlabel">Email: </span>
             <input type="text" ng-model="user.email" value="{{user.email}}" required>
         </label>
-        <label class="item item-input">
-            <span class="input-label" ng-class="passwordlabel">School: </span>
-            <input type="text" ng-model="user.school" value="{{user.school}}" required>
-        </label>
-        <label class="item item-input">
-            <span class="input-label" ng-class="passwordlabel">About: </span>
-            <textarea ng-model="user.about" col="10" maxlength="100" value="{{user.about}}" style="width: 65%;"></textarea>
-        </label>
         <div class="item item-divider">My preferences</div>
         <ion-item>
             <span class="preferences-title">Looking for:</span>
@@ -43,20 +35,8 @@
                 <input class="dualrange" type="range" ng-model="user.prefAgeMax" min="{{user.prefAgeMin}}" max="99" name="age">
 
                 <span class="preferences-title">{{user.prefAgeMax | num}}j</span>
-              <!-- <rzslider
-                  rz-slider-model="ageSlider.min"
-                  rz-slider-high="ageSlider.max"
-                  rz-slider-options="ageSlider.options">
-              </rzslider> -->
-
             </div>
 
-        </ion-item>
-        <ion-item>
-                <span class="preferences-title">Location:</span>
-               <select ng-model="selectedLocation" ng-options="location.id as location.value for location in locations" ng-change="changed(selectedLocation)" style="float: right;">
-                   <option value="">Select a location</option>
-               </select>
         </ion-item>
         <ion-item>
             <span class="preferences-title">Max. distance:</span>
@@ -64,9 +44,6 @@
               <span class="preferences-title">Okm</span>
               <input type="range" ng-model="user.prefDistance" min="{{distanceSlider.min}}" max="{{distanceSlider.max}}" name="volume">
               <span class="preferences-title">{{user.prefDistance | num}}km</span>
-            <!-- <rzslider
-                rz-slider-model="distanceSlider.value"
-                rz-slider-options="distanceSlider.options"></rzslider> -->
             </div>
         </ion-item>
 

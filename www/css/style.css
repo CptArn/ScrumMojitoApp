@@ -287,8 +287,9 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 .date-bar {
 	width: 100%;
+	color: grey;
 	text-align: center;
-	border-bottom: 1px solid #000;
+	border-bottom: 1px solid grey;
 	line-height: 0.1em;
 	margin: 10px 0 20px;
 }

@@ -26,23 +26,26 @@ angular.module('starter.services', [])
         lat: position.coords.latitude,
         lon: position.coords.longitude
       };
-      $http({
-          method: 'POST',
-          url: 'http://studyfindr.herokuapp.com/user/updatemylocation',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          transformRequest: function(obj) {
-              var str = [];
-              for(var p in obj)
-              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-              return str.join("&");
-          },
-          data: $locationdata
-      }).success(function () {
-        console.log('data: ');
-        console.log($locationdata);
-      }).error(function(error) {
-        console.log(error);
-      });
+	  if(position.coords.latitude !== 0 && position.coord.longitude !== 0) {
+		  $http({
+	          method: 'POST',
+	          url: 'http://studyfindr.herokuapp.com/user/updatemylocation',
+	          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	          transformRequest: function(obj) {
+	              var str = [];
+	              for(var p in obj)
+	              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+	              return str.join("&");
+	          },
+	          data: $locationdata
+	      }).success(function () {
+	        console.log('data: ');
+	        console.log($locationdata);
+	      }).error(function(error) {
+	        console.log(error);
+	      });
+	  }
+
       console.log(position.coords);
     };
 

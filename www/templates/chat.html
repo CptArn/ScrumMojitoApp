@@ -1,7 +1,7 @@
 <ion-view>
     <ion-nav-title>{{match.firstname}} {{match.lastname}}</ion-nav-title>
     <ion-content on-swipe-left="toggleTime(true)" on-swipe-right="toggleTime(false)">
-        <div ng-repeat="message in messages | orderBy:'+':true" ng-class="{other: message.receiver_Id != myId}" class="messages">
+        <div ng-repeat="message in messages | orderBy:'+':true" ng-class="{other: message.receiver_Id != myId, me: message.receiver_Id == myId}" class="messages">
             <div class="message">
                 <div ng-if="checkDate(message.date)" class="date-bar clearfix">
                     <p>{{message.date | date:'d MMM y'}}</p>

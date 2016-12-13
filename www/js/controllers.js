@@ -164,7 +164,6 @@ angular.module('starter.controllers', [])
             email: data.email,
             firstname: data.firstname,
             lastname: data.lastname,
-            location: data.location,
             age: data.age,
             prefMale: data.prefMale,
             prefFemale: data.prefFemale,
@@ -183,8 +182,8 @@ angular.module('starter.controllers', [])
     $scope.saveProfile = function() {
         // Post to API
         $scope.user.prefLocation = 2;
-        $scope.user.prefAgeMin = $scope.user.prefAgeMin;
-        $scope.user.prefAgeMax = $scope.user.prefAgeMax;
+        $scope.user.prefAgeMin = parseInt($scope.user.prefAgeMin);
+        $scope.user.prefAgeMax = parseInt($scope.user.prefAgeMax);
         $scope.user.prefDistance = parseInt($scope.user.prefDistance);
         Location.getLocation();
         console.log($scope.user);

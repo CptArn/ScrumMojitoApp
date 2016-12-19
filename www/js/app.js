@@ -57,8 +57,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             // This is the responseError interceptor
             responseError: function(rejection) {
               if (rejection.status === 401) {
-                console.log('responseError');
-                console.log(rejection);
                 $injector.get('Account').refreshToken();
               }
 
@@ -135,10 +133,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   // if none of the above states are matched, use this as the fallback
     if(localStorage.getItem('ID')) {
-        // console.log('user logged in');
         $urlRouterProvider.otherwise('app/dashboard');
     } else {
-        // console.log('not logged in');
         $urlRouterProvider.otherwise('/login');
     }
    // $urlRouterProvider.otherwise('/dashboard');

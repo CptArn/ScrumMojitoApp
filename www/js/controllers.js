@@ -51,7 +51,6 @@ angular.module('starter.controllers', [])
           $scope.users = data;
         }).error(function(error) {
           $scope.users = "Sorry, something went wrong with our server";
-          console.log(error);
         });
     });
 
@@ -71,18 +70,14 @@ angular.module('starter.controllers', [])
             },
             data: {accessToken: localStorage.getItem('accessToken'), id: $id, like: like}
         }).success(function () {
-            console.log('You said ' + like + ' to liking user: ' + favorite_id);
         }).error(function(error) {
-          console.log(error);
+            window.alert("Sorry, something went wrong with our server");
         });
     };
 
     $scope.disabled = false; // Disable all input fields to prevent liking/disliking of multiple users
     // Check slider value to delete or like user
     $scope.checkAction = function(value, user) {
-        console.log(value);
-        console.log(user.id);
-        console.log($scope.users.indexOf(user));
         if(value == 100) {
             $scope.judge(user.id, true);
             $scope.disabled = true;
@@ -100,7 +95,7 @@ angular.module('starter.controllers', [])
 })
 
 // Controller for user profile page
-.controller('ProfileCtrl', function($scope, $http, Profile, Location) {
+.controller('ProfileCtrl', function($scope, $http, Profile, $state, Location) {
     $scope.user = [];
     $scope.gender = [];
     $scope.ageSlider = [];
@@ -113,12 +108,10 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.beforeEnter', function() {
         // Get profile information from user ID
-        Profile.getCurrentProfile().success(function(data) { //localStorage.getItem('user')
-          console.log(data);
+        Profile.getCurrentProfile().success(function(data) {
           $scope.setProfile(data);
         }).error(function(error) {
           $scope.helloWorld = "Sorry, something went wrong with our server";
-          console.log(error);
         });
     });
 
@@ -150,23 +143,23 @@ angular.module('starter.controllers', [])
         $scope.user.prefAgeMin = parseInt($scope.user.prefAgeMin);
         $scope.user.prefAgeMax = parseInt($scope.user.prefAgeMax);
         $scope.user.prefDistance = parseInt($scope.user.prefDistance);
-        Location.getLocation();
-        console.log(    Location.getLocation());
-        console.log($scope.user);
+        // Get location
+        var location = Location.getCurrentLocation();
+        $scope.user.lat = location.lat;
+        $scope.user.lon = location.lon;
 
-        //$http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update?accessToken=' + localStorage.getItem('accessToken'), $scope.user)
-        // $http({
-        //     method: 'POST',
-        //     url: 'http://studyfindr.herokuapp.com/user/' + localStorage.getItem('ID') + '/update?accessToken=' + localStorage.getItem('accessToken'),
-        //     headers: {'Content-Type': 'application/json'},
-        //     data: $scope.user
-        // })
-        // .success(function(data) {
-        //  console.log('data: ');
-        //     console.log(data);
-        // }).error(function(error) {
-        //   console.log(error);
-        // });
+        // POST user-data to the server
+        $http({
+            method: 'POST',
+            url: 'http://studyfindr.herokuapp.com/user/' + localStorage.getItem('ID') + '/update?accessToken=' + localStorage.getItem('accessToken'),
+            headers: {'Content-Type': 'application/json'},
+            data: $scope.user
+        })
+        .success(function(data) {
+           $state.go('app.dashboard');
+        }).error(function(error) {
+            window.alert("Sorry, something went wrong with our server");
+        });
 
     };
 })
@@ -177,7 +170,7 @@ angular.module('starter.controllers', [])
         $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
             $scope.matches = data;
         }).error(function() {
-
+            window.alert("Sorry, something went wrong with our server");
         }).finally(function() {
            // Stop the ion-refresher from spinning
            $scope.$broadcast('scroll.refreshComplete');
@@ -187,11 +180,9 @@ angular.module('starter.controllers', [])
     // Load matches on view enter
     $scope.$on('$ionicView.beforeEnter', function() {
         $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) { //+ localStorage.getItem('ID')
-            console.log('matches: ');
-            console.log(data);
             $scope.matches = data;
         }).error(function() {
-
+            window.alert("Sorry, something went wrong with our server");
         });
     });
 
@@ -204,6 +195,7 @@ angular.module('starter.controllers', [])
             cancelText: 'Keep'
         });
 
+        // POST a like to the server
         confirmPopup.then(function(res) {
             if(res) {
                 var url = 'http://studyfindr.herokuapp.com/user/' + match.id + '/like';
@@ -221,13 +213,11 @@ angular.module('starter.controllers', [])
                     },
                     data: {accessToken: localStorage.getItem('accessToken'), id: $id, like: false}
                 }).success(function () {
-
-                    console.log('You removed ' + match.id + ' from your matches');
                 }).error(function(error) {
-                  console.log(error);
+                  window.alert("Sorry, something went wrong with our server");
                 });
             } else {
-                console.log('Keep');
+
             }
         });
     };
@@ -245,12 +235,12 @@ angular.module('starter.controllers', [])
     var updateFrequency = 2000;
     var updater;
 
+    // Get messages before entering
     $scope.$on('$ionicView.beforeEnter', function() {
         Profile.getUserInfo(match_id).success(function(data) {
             $scope.match = data;
-            console.log($scope.match.firstname);
         }).error(function(error) {
-            console.log(error);
+            window.alert("Sorry, something went wrong with our server");
         });
 
         $scope.getMessages();
@@ -271,10 +261,10 @@ angular.module('starter.controllers', [])
             date: Date.now()
         });
 
+        // POST a chatmessage
         $http.post('https://studyfindr.herokuapp.com/messages/postmessage?id=' + $scope.myId + '&accessToken=' + localStorage.getItem('accessToken')+ '&matchid=' + match_id, $scope.data.message).success(function(data) {
-            console.log(data);
         }).error(function(error) {
-            console.log(error);
+            window.alert("Sorry, something went wrong with our server");
         });
 
        delete $scope.data.message;
@@ -295,12 +285,14 @@ angular.module('starter.controllers', [])
         });
     };
 
+    // Toggle time on the right side
     $scope.showTime = false;
     $scope.toggleTime = function(state) {
         if(state === true) $scope.showTime = true;
         else $scope.showTime = false;
     };
 
+    // Check if the date is today
     $scope.checkDate = function(date) {
 		var currentDate = new Date(date).toDateString();
         if (currentDate < prevDate) {
@@ -328,7 +320,6 @@ angular.module('starter.controllers', [])
   };
   // This is the fail callback from the login method
   var fbLoginError = function(error){
-    console.log('fbLoginError', error);
     $ionicLoading.hide();
   };
   $scope.facebookSignIn = function() {
@@ -344,7 +335,6 @@ angular.module('starter.controllers', [])
         // The user is logged in and has authenticated your app, and response.authResponse supplies
         // the user's ID, a valid access token, a signed request, and the time the access token
         // and signed request each expire
-        console.log('getLoginStatus', success.status);
 
     		// Check if we have our user saved
       } else {
@@ -352,9 +342,6 @@ angular.module('starter.controllers', [])
 				// but has not authenticated your app
         // Else the person is not logged into Facebook,
 				// so we're not sure if they are logged into this app or not.
-
-				console.log('getLoginStatus', success.status);
-
 				$ionicLoading.show({
           template: 'Logging in...'
         });
@@ -366,7 +353,3 @@ angular.module('starter.controllers', [])
     });
   };
 })
-
-.controller('LogoutCtrl', function($scope, $stateParams, $state, $http, Account, $ionicLoading, $q, $ionicActionSheet, facebookConnectPlugin) {
-
-});

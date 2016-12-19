@@ -42,21 +42,16 @@ angular.module('starter.services', [])
 	          },
 	          data: $locationdata
 	      }).success(function () {
-	        console.log('data: ');
-	        console.log($locationdata);
 	      }).error(function(error) {
-	        console.log(error);
+          window.alert("Sorry, something went wrong with our server");
 	      });
 	  }
-
-      console.log(position.coords);
     };
 
     // onError Callback receives a PositionError object
     //
     function onError(error) {
-        console.log('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
+        window.alert("GPS is not enabled or the app doesn't have the rights to use it");
     }
 
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
@@ -68,7 +63,7 @@ angular.module('starter.services', [])
         };
 
         var onError = function() {
-
+            window.alert("GPS is not enabled or the app doesn't have the rights to use it");
         };
 
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
@@ -77,7 +72,6 @@ angular.module('starter.services', [])
 
 .service('Account', function($http, $state, $stateParams, $ionicLoading, Location){
     this.login = function(response) {
-      console.log(response);
       var url = 'http://studyfindr.herokuapp.com/facebook/login';
       var $uid = response.authResponse.userID;
       var $accessToken = response.authResponse.accessToken;
@@ -93,14 +87,13 @@ angular.module('starter.services', [])
           },
           data: {accessToken: $accessToken, id: $uid}
       }).success(function () {
-        console.log(localStorage);
         localStorage.setItem('ID', response.authResponse.userID);
         localStorage.setItem('accessToken', response.authResponse.accessToken);
         Location.getLocation();
         $ionicLoading.hide();
         $state.go('app.dashboard');
       }).error(function(error) {
-        console.log(error);
+          window.alert("Something went wrong");
       });
     };
     this.logout = function() {
@@ -125,13 +118,12 @@ angular.module('starter.services', [])
         localStorage.removeItem('ID');
         $state.go('login');
       }).error( function(error) {
-        console.log(error);
+          window.alert("Sorry, something went wrong with the server");
         });
     };
     this.refreshToken = function() {
       facebookConnectPlugin.getAccessToken(function(token) {
           if(localStorage.getItem('accessToken') == token) {
-            console.log("No new token needed");
           }
           else {
             localStorage.setItem('accessToken', token);

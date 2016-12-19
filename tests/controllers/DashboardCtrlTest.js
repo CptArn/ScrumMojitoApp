@@ -1,18 +1,17 @@
-// 
-// describe('DashboardCtrl', function() {
-// 	var $scope, $controller, $httpBackend;
 //
-// 	beforeEach(module('starter'));
-//
-// 	beforeEach(inject(function(_$rootScope_, _$controller_, _$httpBackend_){
-//
-// 		$scope = _$rootScope_.$new();
-// 		$controller = _$controller_;
-// 		$httpBackend = _$httpBackend_;
-//
-//
-// 		ctrl = $controller('DashboardCtrl', {$scope: $scope});
-// 	}));
+describe('DashboardCtrl', function() {
+	var $scope, $controller, $httpBackend;
+
+	beforeEach(module('starter'));
+
+	beforeEach(inject(function(_$rootScope_, _$controller_, _$httpBackend_){
+
+		$scope = _$rootScope_.$new();
+		$controller = _$controller_;
+		$httpBackend = _$httpBackend_;
+        
+		ctrl = $controller('DashboardCtrl', {$scope: $scope});
+	}));
 // 	// Test deletion of user
 // 	it('checking delete action', function() {
 // 		localStorage.set('ID', '10');
@@ -29,4 +28,4 @@
 // 		$scope.checkAction(100, {id: 1});
 // 		expect($scope.users.length).toEqual(2);
 // 	});
-// });
+});

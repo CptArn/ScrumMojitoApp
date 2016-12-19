@@ -8,6 +8,9 @@ angular.module('starter.services', [])
         // Y U DO DIS? ($scope.user.id???)
         return $http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update', data);
     };
+    this.getQueue = function() {
+        return $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID'));
+    };
     this.getUserInfo = function(id) {
         return $http.get('http://studyfindr.herokuapp.com/user/' + id + '/info?accessToken='+ localStorage.getItem('accessToken') +'&id=' + localStorage.getItem('ID'));
     };
@@ -57,7 +60,19 @@ angular.module('starter.services', [])
     }
 
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
-  }
+    };
+
+    this.getCurrentLocation = function() {
+        var onSuccess = function(position) {
+            return {lat: position.coords.latitude, lon: position.coords.longitude };
+        };
+
+        var onError = function() {
+
+        };
+
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    };
 })
 
 .service('Account', function($http, $state, $stateParams, $ionicLoading, Location){

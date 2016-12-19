@@ -30,11 +30,11 @@
             <span class="preferences-title">Age between:</span>
             <div class="range">
 
-                <span class="preferences-title">{{user.prefAgeMin | num}}j </span>
+                <span class="preferences-title">{{user.prefAgeMin | num}}y </span>
                 <input class="dualrange" type="range" ng-model="user.prefAgeMin" min="18" max="{{user.prefAgeMax}}" name="age">
                 <input class="dualrange" type="range" ng-model="user.prefAgeMax" min="{{user.prefAgeMin}}" max="99" name="age">
 
-                <span class="preferences-title">{{user.prefAgeMax | num}}j</span>
+                <span class="preferences-title">{{user.prefAgeMax | num}}y</span>
             </div>
 
         </ion-item>

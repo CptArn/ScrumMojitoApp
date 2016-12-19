@@ -5,6 +5,7 @@ angular.module('starter.controllers', [])
       return parseInt(input, 10);
     };
 })
+// Convert epoch time to readable datetime string
 .filter('toDate', function() {
     return function(input) {
       return new Date(input).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -39,95 +40,63 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('DashboardCtrl', function($scope, $http, $ionicSideMenuDelegate, $ionicScrollDelegate, $timeout) {
-    $scope.users = [{
-            id: 1234,
-            email: "ik@hotmail.com",
-            firstname: "jef",
-            lastname: "jef",
-            location: 1,
-            age: 21,
-            prefMale: false,
-            prefFemale: true,
-            prefTrans: false,
-            prefDistance: 3,
-            prefLocation: 1,
-            prefAgeMin: 23,
-            prefAgeMax: 24
-        }, {
-                id: 4,
-                email: "ik@hotmail.com",
-                firstname: "jef",
-                lastname: "jef",
-                location: 1,
-                age: 21,
-                prefMale: false,
-                prefFemale: true,
-                prefTrans: false,
-                prefDistance: 3,
-                prefLocation: 1,
-                prefAgeMin: 23,
-                prefAgeMax: 24
-            }];
-
-    $scope.model = {};
+.controller('DashboardCtrl', function($scope, $http, $ionicSideMenuDelegate, $ionicScrollDelegate, $timeout, Profile) {
+    $scope.users = [];
 
     $ionicSideMenuDelegate.canDragContent(false);
-        console.log('user: ' + localStorage.getItem('ID'));
-        $scope.$on('$ionicView.enter', function() {
-           $ionicScrollDelegate.scrollTop(true);
-            $http.get('http://studyfindr.herokuapp.com/user/getmyqueue?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
-              $scope.users = data;
-            //   console.log('data: ');
-            //   console.log(data);
-            }).error(function(error) {
-              $scope.users = "Sorry, something went wrong with our server";
-              console.log(error);
-            });
+
+    $scope.$on('$ionicView.enter', function() {
+        $ionicScrollDelegate.scrollTop(true);
+        Profile.getQueue.success(function(data) {
+          $scope.users = data;
+        }).error(function(error) {
+          $scope.users = "Sorry, something went wrong with our server";
+          console.log(error);
         });
+    });
 
-        $scope.judge = function(favorite_id, like) {
-            var url = 'http://studyfindr.herokuapp.com/user/' + favorite_id + '/like';
-            var $id = localStorage.getItem('ID');
-            $http({
-                method: 'POST',
-                url: url,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                },
-                data: {accessToken: localStorage.getItem('accessToken'), id: $id, like: like}
-            }).success(function () {
-                console.log('You said ' + like + ' to liking user: ' + favorite_id);
-            }).error(function(error) {
-              console.log(error);
-            });
-        };
-        $scope.disabled = false;
-        // Check slider value to delete or like user
-        $scope.checkAction = function(value, user) {
-            console.log(value);
-            console.log(user.id);
-            console.log($scope.users.indexOf(user));
-            if(value == 100) {
-                $scope.judge(user.id, true);
-                $scope.disabled = true;
-                $scope.users.splice($scope.users.indexOf(user), 1);
-                $timeout(function() {$scope.disabled = false;}, 500);
+    // Like or dislike the user
+    $scope.judge = function(favorite_id, like) {
+        var url = 'http://studyfindr.herokuapp.com/user/' + favorite_id + '/like';
+        var $id = localStorage.getItem('ID');
+        $http({
+            method: 'POST',
+            url: url,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            transformRequest: function(obj) {
+                var str = [];
+                for(var p in obj)
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: {accessToken: localStorage.getItem('accessToken'), id: $id, like: like}
+        }).success(function () {
+            console.log('You said ' + like + ' to liking user: ' + favorite_id);
+        }).error(function(error) {
+          console.log(error);
+        });
+    };
 
-                user.action = 0;
-            } else if(value == -100) {
-                $scope.judge(user.id, false);
-                $scope.disabled = true;
-                $scope.users.splice($scope.users.indexOf(user), 1);
-                $timeout(function() {$scope.disabled = false;}, 500);
-                user.action = 0;
-            }
-        };
-
+    $scope.disabled = false; // Disable all input fields to prevent liking/disliking of multiple users
+    // Check slider value to delete or like user
+    $scope.checkAction = function(value, user) {
+        console.log(value);
+        console.log(user.id);
+        console.log($scope.users.indexOf(user));
+        if(value == 100) {
+            $scope.judge(user.id, true);
+            $scope.disabled = true;
+            $scope.users.splice($scope.users.indexOf(user), 1);
+            $timeout(function() {$scope.disabled = false;}, 500);
+            user.action = 0;
+        } else if(value == -100) {
+            $scope.judge(user.id, false);
+            $scope.disabled = true;
+            $scope.users.splice($scope.users.indexOf(user), 1);
+            $timeout(function() {$scope.disabled = false;}, 500);
+            user.action = 0;
+        }
+    };
 })
 
 // Controller for user profile page
@@ -142,13 +111,9 @@ angular.module('starter.controllers', [])
     $scope.user.prefAgeMin = 20;
     $scope.user.prefAgeMax = 25;
 
-    // Dropdown location options
-    $scope.locations = [{id: 1, value: "Gent"}, {id: 2, value: "Kortrijk"}, {id: 3, value: "Leuven"}, {id: 4, value: "Brussel"}];
-
     $scope.$on('$ionicView.beforeEnter', function() {
-
-    // Get profile information from user ID
-    Profile.getCurrentProfile().success(function(data) { //localStorage.getItem('user')
+        // Get profile information from user ID
+        Profile.getCurrentProfile().success(function(data) { //localStorage.getItem('user')
           console.log(data);
           $scope.setProfile(data);
         }).error(function(error) {
@@ -186,36 +151,30 @@ angular.module('starter.controllers', [])
         $scope.user.prefAgeMax = parseInt($scope.user.prefAgeMax);
         $scope.user.prefDistance = parseInt($scope.user.prefDistance);
         Location.getLocation();
+        console.log(    Location.getLocation());
         console.log($scope.user);
 
         //$http.post('http://studyfindr.herokuapp.com/user/' + $scope.user.id + '/update?accessToken=' + localStorage.getItem('accessToken'), $scope.user)
-        $http({
-            method: 'POST',
-            url: 'http://studyfindr.herokuapp.com/user/' + localStorage.getItem('ID') + '/update?accessToken=' + localStorage.getItem('accessToken'),
-            headers: {'Content-Type': 'application/json'},
-            data: $scope.user
-        })
-        .success(function(data) {
-         console.log('data: ');
-            console.log(data);
-        }).error(function(error) {
-          console.log(error);
-        });
+        // $http({
+        //     method: 'POST',
+        //     url: 'http://studyfindr.herokuapp.com/user/' + localStorage.getItem('ID') + '/update?accessToken=' + localStorage.getItem('accessToken'),
+        //     headers: {'Content-Type': 'application/json'},
+        //     data: $scope.user
+        // })
+        // .success(function(data) {
+        //  console.log('data: ');
+        //     console.log(data);
+        // }).error(function(error) {
+        //   console.log(error);
+        // });
 
-    };
-
-    // Save location when option is changed
-    $scope.changed = function(id) {
-        $scope.locationId = id;
     };
 })
 
 .controller('MatchesCtrl', function($scope, $stateParams, $http, $ionicPopup) {
     // Pull page to refresh matches
     $scope.refreshMatches = function() {
-        $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) { //+ localStorage.getItem('ID')
-            console.log('matches: ');
-            console.log(data);
+        $http.get('http://studyfindr.herokuapp.com/user/getmatches?accessToken=' + localStorage.getItem('accessToken') + '&id=' + localStorage.getItem('ID')).success(function(data) {
             $scope.matches = data;
         }).error(function() {
 
@@ -277,13 +236,12 @@ angular.module('starter.controllers', [])
 .controller('ChatCtrl', function($scope, $stateParams, $http, $ionicScrollDelegate, Profile) {
 	var prevDate;
 	var match_id = $stateParams.id;
-    // var match_id = 1; //10210995798960326
     $scope.myId = localStorage.getItem('ID');
-    // $scope.myId = 2; //10208094342336332
 
     $scope.data = {};
     $scope.messages = [];
 
+    // Message update interval
     var updateFrequency = 2000;
     var updater;
 
@@ -294,7 +252,6 @@ angular.module('starter.controllers', [])
         }).error(function(error) {
             console.log(error);
         });
-
 
         $scope.getMessages();
         updater = setInterval(function() {$scope.getMessages();}, updateFrequency);
@@ -324,31 +281,13 @@ angular.module('starter.controllers', [])
        $ionicScrollDelegate.scrollBottom(true);
      };
 
-
-     $scope.inputUp = function() {
-       if (isIOS) $scope.data.keyboardHeight = 216;
-       $timeout(function() {
-         $ionicScrollDelegate.scrollBottom(true);
-       }, 300);
-     };
-
-     $scope.inputDown = function() {
-       if (isIOS) $scope.data.keyboardHeight = 0;
-       $ionicScrollDelegate.resize();
-     };
-
-
-
     $scope.closeKeyboard = function() {
     // cordova.plugins.Keyboard.close();
     };
 
-
     // Get conversation between two users
     $scope.getMessages = function() {
         $http.get('https://studyfindr.herokuapp.com/messages/getconversation?id=' + $scope.myId + '&accessToken=' + localStorage.getItem('accessToken') + '&matchid=' + match_id).success(function(data) {
-            console.log('convo: ');
-            console.log(data);
             // $ionicScrollDelegate.scrollBottom(true);
             $scope.messages = data;
         }).error(function() {

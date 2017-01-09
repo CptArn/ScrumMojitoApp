@@ -4,6 +4,6 @@ node_js:
 before_script:
   - npm install
   - bower install -F
-script: karma start tests/karma.conf.js
+# script: karma start tests/karma.conf.js
 notifications:
   slack: scrummojito:MjnMALRNtGdBC9JhXUTx4D1o
